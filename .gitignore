@@ -1,0 +1,43 @@
+# Secrets
+secrets.yaml
+config.local.yaml
+.env
+
+# Runtime data (kept in tree via .gitkeep)
+data/*
+!data/.gitkeep
+input/*
+!input/.gitkeep
+output/*
+!output/.gitkeep
+
+# Caches / generated
+*.index.json
+.index.json
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Package build and test output
+dist/
+build/
+.pytest_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# What ezrsurvey itself writes when run from this folder
+ezrsurvey-outputs/
+ezrsurvey-example/
+
+# Documentation site build
+_site/
+.quarto/
