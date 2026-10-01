@@ -420,7 +420,12 @@ def warn(text):
 
 
 def interactive():
-    """Tell whether a person is at the console, as R's interactive() does."""
+    """Tell whether a person is at the console, as R's interactive() does.
+
+    A document Quarto is rendering counts as a script, as R's is when knitted.
+    """
+    if os.environ.get("QUARTO_DOCUMENT_PATH"):
+        return False
     if hasattr(sys, "ps1") or sys.flags.interactive:
         return True
     shell = sys.modules.get("IPython")

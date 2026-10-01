@@ -1,5 +1,6 @@
 """Port R's test-progress.R: progress stays silent in scripts, can be forced, and never switches on mid-run."""
 
+import sys
 import time
 
 import ezrsurvey as ez
@@ -13,6 +14,7 @@ from ezrsurvey.progress import (
     progress_plan,
     progress_start,
 )
+from ezrsurvey.rbase import interactive
 
 
 def test_progress_is_off_outside_an_interactive_session(capsys):
@@ -59,3 +61,10 @@ def test_eta_is_empty_until_there_is_something_to_measure():
     assert progress_eta(run, 1) == ""
     run["started"] = time.monotonic() - 100
     assert "left" in progress_eta(run, 5)
+
+
+def test_a_document_quarto_renders_counts_as_a_script(monkeypatch):
+    monkeypatch.setattr(sys, "ps1", ">>> ", raising=False)
+    assert interactive()
+    monkeypatch.setenv("QUARTO_DOCUMENT_PATH", "report.qmd")
+    assert not interactive()
