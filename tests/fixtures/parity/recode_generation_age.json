@@ -4,9 +4,12 @@
   "kind": "vector",
   "columns": {
     "value": {
-      "type": "character"
+      "type": "factor",
+      "levels": ["Silent", "Baby Boomer", "Gen X", "Millennial", "Gen Z", "Gen Alpha"]
     }
   },
   "names": ["value"],
-  "attrs": []
+  "attrs": {
+    "levels": ["Silent", "Baby Boomer", "Gen X", "Millennial", "Gen Z", "Gen Alpha"]
+  }
 }

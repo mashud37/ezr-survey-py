@@ -13,3 +13,7 @@ The first release: the Python port of the R package `ezrsurvey` 0.7.0.
   the Quarto skeletons run Python through Quarto's Jupyter engine.
 * Options and YAML profiles are shared with the R package, in the same files and folders.
 * The language-forced differences are listed in `CONVENTIONS.md`.
+* It also carries the R package's fixes made after 0.7.0. `crosstab()` and `crosstab_banner()`
+  handle a question called `value` or `n`. `calc_percentage()` and `crosstab()` keep a
+  categorical's own answer order. `bin_numeric()`, `recode_age()` and `recode_generation()`
+  return categoricals in band order, so "40-70k" comes before "100-150k".

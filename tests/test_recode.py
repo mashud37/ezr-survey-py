@@ -104,3 +104,11 @@ def test_recode_age_reports_answers_without_a_number(capsys):
     out = ez.recode_age(["young", "31"], quiet=True)
     assert capsys.readouterr().err == ""
     assert pd.isna(out.iloc[0])
+
+
+def test_bin_numeric_keeps_its_bands_in_order_not_alphabetical():
+    out = ez.bin_numeric([45, 120, 60], breaks=[40, 70, 100, 150], labels=["40-70k", "70-100k", "100-150k"])
+    assert isinstance(out.dtype, pd.CategoricalDtype)
+    assert list(out.cat.categories) == ["40-70k", "70-100k", "100-150k"]
+    table = ez.calc_percentage(pd.DataFrame({"band": out}), "band")
+    assert table["band"].tolist() == ["40-70k", "100-150k"]

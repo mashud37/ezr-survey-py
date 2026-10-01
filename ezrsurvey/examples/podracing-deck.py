@@ -32,7 +32,7 @@ ez.use_brand(colors=["#12314E", "#3E6E8E", "#C9A227"])
 
 # Derive the one profile column that is not in the raw export: age bands.
 survey = ez.podracing_survey
-survey["age_band"] = ez.recode_age(survey["demo_age"]).to_numpy()
+survey["age_band"] = ez.recode_age(survey["demo_age"])
 ez.use_dataset(survey)
 
 # The importance/performance model feeds the summary gauge and the driver

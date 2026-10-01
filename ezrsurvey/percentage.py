@@ -6,7 +6,7 @@ import pandas as pd
 from .coerce import ensure_numeric
 from .config import ezrsurvey_default
 from .dataset import col_label, resolve_data_columns, resolve_data_dots
-from .orders import order_for
+from .orders import factor_order, order_for
 from .rbase import (
     as_character,
     factor,
@@ -192,8 +192,9 @@ def calc_percentage(  # lint-style: ignore FN001,FN003
     Percentages are computed *within* each group, so they sum to about 100 per
     group (subject to rounding). The order of `column` is decided in this order
     of precedence: an explicit `levels` argument; then a non-"none" `sort`; then
-    a registered order for the variable (see `register_order()`); otherwise data
-    order. When `by` is omitted, the ``default_by`` option is used if set, so
+    a registered order for the variable (see `register_order()`); then the
+    column's own categories, when it is categorical; otherwise data order. When
+    `by` is omitted, the ``default_by`` option is used if set, so
     you can apply a standard breakdown without repeating it. ``wide=True``
     pivots to one row per group with a column per answer: the shape you want for
     a slide table or an Excel tab.
@@ -214,7 +215,8 @@ def calc_percentage(  # lint-style: ignore FN001,FN003
     levels : list of str, optional
         An explicit level order for `column`. Overrides `sort`. If omitted and
         ``sort="none"``, a registered order for this variable is applied
-        automatically.
+        automatically, and failing that a categorical keeps its own category
+        order.
     digits : int
         Decimal places for the percentage. Default 0.
     wide : bool
@@ -269,6 +271,8 @@ def calc_percentage(  # lint-style: ignore FN001,FN003
     out = count_within(frame, by_names, col_name, weighted, digits)
     if levels is None and sort == "none":
         levels = order_for(col_name)
+        if levels is None:
+            levels = factor_order(data[col_name], out[col_name])
     out = order_factor(out, col_name, sort=sort, levels=levels)
     if wide:
         value_column = "wpct" if weighted else "pct"

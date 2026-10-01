@@ -112,18 +112,21 @@ def drop_items(x, items, trim=True):
     return pd.Series(out, index=values.index, dtype=object)
 
 
-def bin_numeric(x, breaks, labels, right=False, quiet=False):
+def bin_numeric(x, breaks, labels, right=False, quiet=False):  # lint-style: ignore FN001
     """Bin a numeric vector into labelled groups.
 
-    A survey-friendly binning helper that returns text (not a categorical) and
-    uses left-closed, right-open intervals by default so that age bands like
+    A survey-friendly binning helper that returns a categorical in band order
+    and uses left-closed, right-open intervals by default so that age bands like
     18-21 behave intuitively.
 
     Bands are built as R's ``cut()`` builds them with ``include.lowest = TRUE``,
     so the very lowest break is included. With ``right=False`` (the default) a
     band runs from its lower break up to *but not including* the next, i.e.
     ``[18, 25)``. Text input is salvaged with `ensure_numeric()`, so "27 years"
-    bins correctly.
+    bins correctly. The result is a categorical whose categories follow
+    `labels`, so tables and charts built from it list the bands low to high
+    ("40-70k" before "100-150k") rather than alphabetically. Call
+    ``.astype(object)`` on it if you need plain text.
 
     A value below the first break or above the last becomes missing and drops
     out of every chart built from the result, so the function says how many did
@@ -149,7 +152,8 @@ def bin_numeric(x, breaks, labels, right=False, quiet=False):
     Returns
     -------
     pandas.Series
-        Group labels; values outside the range or missing become missing.
+        A categorical whose categories are `labels` in the order given (values
+        outside the range or missing become missing).
 
     See Also
     --------
@@ -201,7 +205,7 @@ def recode_age(x, breaks=None, labels=None, quiet=False):
     Returns
     -------
     pandas.Series
-        Age-band labels.
+        A categorical of age-band labels, categories in band order.
 
     See Also
     --------

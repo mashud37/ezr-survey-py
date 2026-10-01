@@ -1,0 +1,6 @@
+{
+  "messages": [],
+  "warnings": [],
+  "kind": "error",
+  "error": "crosstab(wide = FALSE) puts the cells in a column called `value`, which is also the name of a question here. Rename that column, or use wide = TRUE."
+}

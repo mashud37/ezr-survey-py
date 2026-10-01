@@ -1,0 +1,30 @@
+{
+  "messages": [],
+  "warnings": [],
+  "kind": "frame",
+  "columns": {
+    "variable": {
+      "type": "character"
+    },
+    "item": {
+      "type": "character"
+    },
+    "Overall": {
+      "type": "numeric"
+    },
+    "A": {
+      "type": "numeric"
+    },
+    "B": {
+      "type": "numeric"
+    }
+  },
+  "names": ["variable", "item", "Overall", "A", "B"],
+  "attrs": {
+    "banner_spanners": {
+      "col": ["Overall", "A", "B"],
+      "group": ["Overall", "n", "n"],
+      "label": ["Overall", "A", "B"]
+    }
+  }
+}

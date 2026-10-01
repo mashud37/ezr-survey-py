@@ -23,6 +23,8 @@ R_TO_PYTHON_WORDING = [
     ('ezrsurvey_options(output_dir = ".")', 'ezrsurvey_options(output_dir=".")'),
     ("Pass an unquoted column of the data", "Pass the name of a column of the data"),
     ("overwrite = TRUE", "overwrite=True"),
+    ("wide = FALSE", "wide=False"),
+    ("wide = TRUE", "wide=True"),
     (
         'c(variable = "demo_gender", Male = 0.5, Female = 0.5)',
         '{"variable": "demo_gender", "Male": 0.5, "Female": 0.5}',

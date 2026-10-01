@@ -159,3 +159,39 @@ def test_levels_from_drop_items_leave_the_dropped_answer_out():
     out = ez.calc_percentage(data, "age", levels=levels)
     assert list(out["age"].cat.categories) == ["18-24", "25-34", "35+"]
     assert out["n"].tolist() == [1, 2, 1]
+
+
+def test_calc_percentage_keeps_a_categoricals_own_answer_order():
+    levels = ["Strongly disagree", "Disagree", "Agree", "Strongly agree"]
+    answers = ["Agree", "Strongly disagree", "Disagree", "Agree", "Strongly agree", ""]
+    d = pd.DataFrame({"agree": pd.Categorical(answers, categories=levels + [""])})
+    assert ez.calc_percentage(d, "agree")["agree"].tolist() == levels
+
+
+def test_crosstab_copes_with_questions_called_value_or_n():
+    d = pd.DataFrame({"value": ["Low", "High", "High", "Low", "High"], "n": ["A", "A", "B", "B", "B"]})
+    table = ez.crosstab(d, "value", "n")
+    assert list(table.columns) == ["value", "A", "B"]
+    assert table["value"].tolist() == ["High", "Low"]
+    assert table["A"].tolist() == [1, 1]
+    assert table["B"].tolist() == [2, 1]
+    flipped = ez.crosstab(d, "n", "value", cell="row_pct")
+    assert list(flipped.columns) == ["n", "High", "Low"]
+    assert flipped["High"].tolist() == [50, 67]
+    long = ez.crosstab(d, "n", "n", wide=False)
+    assert long["value"].tolist() == [2, 3]
+    with pytest.raises(ValueError, match="Rename that column"):
+        ez.crosstab(d, "value", "n", wide=False)
+
+
+def test_crosstab_keeps_a_categoricals_own_answer_order():
+    levels = ["Strongly disagree", "Disagree", "Agree", "Strongly agree"]
+    d = pd.DataFrame(
+        {
+            "agree": pd.Categorical(["Disagree", "Agree", "Strongly agree", "Agree"], categories=levels),
+            "group": pd.Categorical(["Old", "Young", "Old", "Young"], categories=["Young", "Old"]),
+        }
+    )
+    table = ez.crosstab(d, "agree", "group")
+    assert table["agree"].tolist() == ["Disagree", "Agree", "Strongly agree"]
+    assert list(table.columns) == ["agree", "Young", "Old"]

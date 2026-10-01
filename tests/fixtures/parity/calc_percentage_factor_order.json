@@ -1,0 +1,19 @@
+{
+  "messages": [],
+  "warnings": [],
+  "kind": "frame",
+  "columns": {
+    "agree": {
+      "type": "ordered",
+      "levels": ["Strongly disagree", "Disagree", "Agree", "Strongly agree"]
+    },
+    "n": {
+      "type": "integer"
+    },
+    "pct": {
+      "type": "numeric"
+    }
+  },
+  "names": ["agree", "n", "pct"],
+  "attrs": {}
+}

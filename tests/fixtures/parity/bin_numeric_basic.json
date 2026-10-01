@@ -4,9 +4,12 @@
   "kind": "vector",
   "columns": {
     "value": {
-      "type": "character"
+      "type": "factor",
+      "levels": ["<18", "18-24", "25-34", "35+"]
     }
   },
   "names": ["value"],
-  "attrs": []
+  "attrs": {
+    "levels": ["<18", "18-24", "25-34", "35+"]
+  }
 }

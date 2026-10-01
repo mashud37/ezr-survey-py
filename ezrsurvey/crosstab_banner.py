@@ -11,7 +11,7 @@ import pandas as pd
 from .auto_select import col_kind, detect_multiselect, multiselect_label
 from .coerce import ensure_numeric
 from .confirm import confirm_lines, confirm_on, confirm_selection
-from .crosstab import crosstab
+from .crosstab import crosstab_long
 from .dataset import resolve_data
 from .percentage import calc_percentage_multi
 from .progress import progress_done, progress_item, progress_note, progress_plan, progress_start
@@ -109,22 +109,21 @@ def banner_block_cat(d_all, variable, settings):
         if group != ".overall" and group == variable:
             continue
         across = ".all" if group == ".overall" else group
-        table = crosstab(
-            d_all,
-            variable,
-            across,
-            cell=mode,
-            wide=False,
-            na_rm=settings["na_rm"],
-            drop=settings["drop"],
-            weights=settings["weights"],
-            digits=settings["pct_digits"],
-        )
+        request = {
+            "cell": mode,
+            "value": None,
+            "fn": None,
+            "digits": settings["pct_digits"],
+            "na_rm": settings["na_rm"],
+            "drop": settings["drop"],
+            "weights": settings["weights"],
+        }
+        table = crosstab_long(d_all, variable, across, request)
         if item_levels is None:
-            item_levels = factor_levels(table[variable])
+            item_levels = factor_levels(table[".x"])
         group_items = ["Overall"] if group == ".overall" else settings["group_levels"][group]
         seen = {}
-        for item, group_item, value in zip(as_character(table[variable]), as_character(table[across]), table["value"]):
+        for item, group_item, value in zip(as_character(table[".x"]), as_character(table[".y"]), table[".value"]):
             label = "Overall" if group == ".overall" else group_item
             seen[(item, label)] = value
         rows.extend(fill_grid(variable, group, item_levels, group_items, seen))
@@ -333,11 +332,20 @@ def clear_checkpoints():
     return len(files)
 
 
-def group_levels_for(d_all, col_vars, na_rm, drop):
+def group_levels_for(d_all, col_vars, na_rm, drop, weights):
+    request = {
+        "cell": "count",
+        "value": None,
+        "fn": None,
+        "digits": 0,
+        "na_rm": na_rm,
+        "drop": drop,
+        "weights": weights,
+    }
     levels = {}
     for group in col_vars:
-        table = crosstab(d_all, group, ".all", cell="count", wide=False, na_rm=na_rm, drop=drop)
-        levels[group] = factor_levels(table[group])
+        table = crosstab_long(d_all, group, ".all", request)
+        levels[group] = factor_levels(table[".x"])
     return levels
 
 
@@ -620,7 +628,7 @@ def crosstab_banner(  # lint-style: ignore FN001,FN003
     d_all = data.assign(**{".all": "Overall"})
     settings = {
         "col_vars": chosen["col_vars"],
-        "group_levels": group_levels_for(d_all, chosen["col_vars"], na_rm, drop),
+        "group_levels": group_levels_for(d_all, chosen["col_vars"], na_rm, drop, weights),
         "cell": cell,
         "which": which,
         "total": total,

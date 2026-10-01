@@ -1,0 +1,18 @@
+{
+  "messages": [],
+  "warnings": [],
+  "kind": "frame",
+  "columns": {
+    "n": {
+      "type": "character"
+    },
+    "High": {
+      "type": "numeric"
+    },
+    "Low": {
+      "type": "numeric"
+    }
+  },
+  "names": ["n", "High", "Low"],
+  "attrs": {}
+}

@@ -97,13 +97,15 @@ def take_rows(frame, positions):
     return frame.iloc[positions].reset_index(drop=True)
 
 
-def pivot_wider(frame, names_from, values_from):
+def pivot_wider(frame, names_from, values_from, names_sort=False):
     """Spread one column into many, as tidyr's pivot_wider(): names and rows in order of first appearance.
 
     Args:
         frame: A long DataFrame.
         names_from: The column whose values become the new column names.
         values_from: The column that fills the new columns.
+        names_sort: Put the new columns in the category order of `names_from`,
+            which must then be categorical, missing last.
 
     Returns:
         A DataFrame with one row per combination of the remaining columns.
@@ -114,6 +116,9 @@ def pivot_wider(frame, names_from, values_from):
         label = "NA" if is_missing(name) else name
         if label not in names:
             names.append(label)
+    if names_sort:
+        categories = list(as_character(list(frame[names_from].cat.categories)))
+        names.sort(key=lambda name: categories.index(name) if name in categories else len(categories))
     rows = {}
     row_values = {}
     id_lists = [frame[column].tolist() for column in id_columns]

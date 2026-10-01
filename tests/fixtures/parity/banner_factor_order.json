@@ -1,0 +1,30 @@
+{
+  "messages": [],
+  "warnings": [],
+  "kind": "frame",
+  "columns": {
+    "variable": {
+      "type": "character"
+    },
+    "item": {
+      "type": "character"
+    },
+    "Overall": {
+      "type": "numeric"
+    },
+    "Young": {
+      "type": "numeric"
+    },
+    "Old": {
+      "type": "numeric"
+    }
+  },
+  "names": ["variable", "item", "Overall", "Young", "Old"],
+  "attrs": {
+    "banner_spanners": {
+      "col": ["Overall", "Young", "Old"],
+      "group": ["Overall", "group", "group"],
+      "label": ["Overall", "Young", "Old"]
+    }
+  }
+}

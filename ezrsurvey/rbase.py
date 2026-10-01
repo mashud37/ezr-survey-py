@@ -341,7 +341,8 @@ def cut(values, breaks, labels, right=True, include_lowest=False):
         include_lowest: Close the outermost interval on its open side too.
 
     Returns:
-        A Series of labels, missing where a value falls outside every interval.
+        A categorical Series whose categories are `labels` in the order given,
+        missing where a value falls outside every interval.
     """
     series = as_series(values)
     edges = sorted(float(edge) for edge in breaks)
@@ -351,7 +352,7 @@ def cut(values, breaks, labels, right=True, include_lowest=False):
             out.append(np.nan)
             continue
         out.append(interval_label(float(value), edges, labels, right, include_lowest))
-    return pd.Series(out, index=series.index, dtype=object)
+    return factor(pd.Series(out, index=series.index, dtype=object), levels=unique_values(labels))
 
 
 def interval_label(value, edges, labels, right, include_lowest):

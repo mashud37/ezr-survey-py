@@ -14,6 +14,7 @@ def test_generation_scheme_returns_ordered_bands():
 def test_recode_generation_maps_birth_years():
     out = ez.recode_generation([1935, 1950, 1968, 1990, 2001, 2015], input="year")
     assert out.tolist() == ["Silent", "Baby Boomer", "Gen X", "Millennial", "Gen Z", "Gen Alpha"]
+    assert list(out.cat.categories[:3]) == ["Silent", "Baby Boomer", "Gen X"]
     assert ez.recode_generation([1900], input="year").isna().all()
 
 
@@ -28,4 +29,6 @@ def test_recode_generation_salvages_text_and_uses_current_year():
 
 def test_recode_generation_accepts_a_custom_scheme():
     scheme = pd.DataFrame({"label": ["Young", "Old"], "from": [2000, 1900]})
-    assert ez.recode_generation([2005, 1950], input="year", scheme=scheme).tolist() == ["Young", "Old"]
+    out = ez.recode_generation([2005, 1950], input="year", scheme=scheme)
+    assert out.tolist() == ["Young", "Old"]
+    assert list(out.cat.categories) == ["Old", "Young"]

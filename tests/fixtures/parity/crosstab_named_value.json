@@ -1,0 +1,18 @@
+{
+  "messages": [],
+  "warnings": [],
+  "kind": "frame",
+  "columns": {
+    "value": {
+      "type": "character"
+    },
+    "A": {
+      "type": "numeric"
+    },
+    "B": {
+      "type": "numeric"
+    }
+  },
+  "names": ["value", "A", "B"],
+  "attrs": {}
+}

@@ -1,0 +1,21 @@
+{
+  "messages": [],
+  "warnings": [],
+  "kind": "frame",
+  "columns": {
+    "shop": {
+      "type": "character"
+    },
+    "S": {
+      "type": "numeric"
+    },
+    "M": {
+      "type": "numeric"
+    },
+    "L": {
+      "type": "numeric"
+    }
+  },
+  "names": ["shop", "S", "M", "L"],
+  "attrs": {}
+}

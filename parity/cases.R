@@ -2,6 +2,18 @@
 # same calls in Python under the same names. Session state (dataset, weights,
 # options, orders) is reset after every case.
 
+# Two questions named after the columns crosstab() used to count under, and two
+# factors whose level order is not alphabetical.
+named_cells <- data.frame(
+  value = c("Low", "High", "High", "Low", "High", "Low"),
+  n = c("A", "A", "B", "B", "B", "A")
+)
+agree_levels <- c("Strongly disagree", "Disagree", "Agree", "Strongly agree")
+agree_factors <- data.frame(
+  agree = factor(c("Disagree", "Agree", "Strongly agree", "Agree"), levels = agree_levels),
+  group = factor(c("Old", "Young", "Old", "Young"), levels = c("Young", "Old"))
+)
+
 cases <- list(
   # ---- Coerce and recode ----
   ensure_numeric_messy = quote(ensure_numeric(c("25 years", "31", "forty"), name = "age")),
@@ -124,6 +136,14 @@ cases <- list(
                                                              prefix = "ratings_")),
   calc_percentage_batch_by = quote(calc_percentage_batch(podracing_survey, starts_with("partner_recall"),
                                                          by = demo_gender, sort = "desc")),
+  calc_percentage_factor_order = quote(calc_percentage(
+    data.frame(agree = factor(c("Agree", "Strongly disagree", "Disagree", "Agree", "Strongly agree", ""),
+                              levels = c(agree_levels, ""))),
+    agree)),
+  calc_percentage_bands = quote(calc_percentage(
+    data.frame(band = bin_numeric(c(45, 120, 60), breaks = c(40, 70, 100, 150),
+                                  labels = c("40-70k", "70-100k", "100-150k"))),
+    band)),
 
   # ---- Weights ----
   weight_vector_gender = quote(weight_vector(podracing_survey, c(variable = "demo_gender", Male = 0.49,
@@ -155,6 +175,14 @@ cases <- list(
   crosstab_weighted = quote(crosstab(podracing_survey, region, demo_gender, cell = "col_pct",
                                      weights = c(variable = "collector", email = 1, panel = 1,
                                                  socials = 1, in_app = 1))),
+  crosstab_named_value = quote(crosstab(named_cells, value, n)),
+  crosstab_named_n_row_pct = quote(crosstab(named_cells, n, value, cell = "row_pct")),
+  crosstab_named_value_long = quote(crosstab(named_cells, value, n, wide = FALSE)),
+  crosstab_factor_order = quote(crosstab(agree_factors, agree, group)),
+  crosstab_registered_columns = quote({
+    register_order("size", c("S", "M", "L"), vars = "size")
+    crosstab(data.frame(shop = c("x", "x", "y", "y"), size = c("M", "L", "S", "M")), shop, size)
+  }),
   compare_values_basic = quote(compare_values(
     current = data.frame(feature = c("price", "quality", "new"), performance = c(2.8, 4.4, 1)),
     previous = data.frame(feature = c("price", "quality", "gone"), performance = c(3.1, 4.2, 2)))),
@@ -200,6 +228,8 @@ cases <- list(
   banner_auto_shopping = quote(crosstab_banner(shopping_survey, max_levels = 8)),
   banner_mean_error = quote(crosstab_banner(podracing_survey, rows = demo_gender, cols = region, cell = "mean")),
   banner_empty = quote(crosstab_banner(podracing_survey[0, ], rows = demo_gender, cols = region)),
+  banner_named_value = quote(crosstab_banner(named_cells, rows = value, cols = n, cell = "count")),
+  banner_factor_order = quote(crosstab_banner(agree_factors, rows = agree, cols = group)),
 
   # ---- Drivers ----
   importance_rwa = quote(calc_importance(podracing_survey, nps_value, starts_with("ratings_"))),

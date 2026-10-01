@@ -4,9 +4,12 @@
   "kind": "vector",
   "columns": {
     "value": {
-      "type": "character"
+      "type": "factor",
+      "levels": ["17 or younger", "18 to 21", "22 to 25", "26 to 29", "30 to 34", "35+"]
     }
   },
   "names": ["value"],
-  "attrs": []
+  "attrs": {
+    "levels": ["17 or younger", "18 to 21", "22 to 25", "26 to 29", "30 to 34", "35+"]
+  }
 }

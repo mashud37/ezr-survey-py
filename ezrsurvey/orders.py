@@ -3,7 +3,7 @@
 import numpy as np
 import pandas as pd
 
-from .rbase import as_character, factor, r_sort
+from .rbase import as_character, factor, is_categorical, r_sort, unique_values
 
 ORDERS = {}
 
@@ -208,6 +208,22 @@ def order_for(var):
             if var.startswith(prefix):
                 return list(order["levels"])
     return None
+
+
+def factor_order(column, answers):
+    """The answer order a categorical column carries, or None when it is not categorical.
+
+    Only answers still present are kept, so a level that was blanked or dropped
+    does not come back as an empty row, and an answer the levels do not list
+    goes at the end rather than turning missing.
+    """
+    if not is_categorical(column):
+        return None
+    present = unique_values(as_character(answers))
+    levels = as_character(list(column.cat.categories))
+    in_order = [level for level in levels if level in present]
+    unlisted = [answer for answer in present if answer not in in_order]
+    return in_order + unlisted
 
 
 def apply_order(x, name=None, var=None):

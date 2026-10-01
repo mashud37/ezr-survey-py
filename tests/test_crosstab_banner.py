@@ -237,3 +237,17 @@ def test_clear_checkpoints_empties_the_managed_folder(tmp_path, monkeypatch, cap
 def test_a_frame_with_no_rows_is_refused():
     with pytest.raises(ValueError, match="needs at least one row"):
         ez.crosstab_banner(podracing_survey.iloc[0:0], rows="demo_gender", cols="region")
+
+
+def test_crosstab_banner_copes_with_questions_called_value_or_n():
+    d = pd.DataFrame(
+        {
+            "value": ["Low", "High", "High", "Low", "High", "Low"],
+            "n": ["A", "A", "B", "B", "B", "A"],
+        }
+    )
+    banner = ez.crosstab_banner(d, rows="value", cols="n", cell="count")
+    assert list(banner.columns) == ["variable", "item", "Overall", "A", "B"]
+    assert banner["item"].tolist() == ["High", "Low"]
+    assert banner["A"].tolist() == [1, 2]
+    assert banner["B"].tolist() == [2, 1]

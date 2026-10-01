@@ -82,7 +82,8 @@ def recode_generation(x, input="age", year=None, scheme=None):  # lint-style: ig
     Returns
     -------
     pandas.Series
-        Cohort labels; values outside the scheme's range are missing.
+        A categorical of cohort labels, categories from the oldest cohort to the
+        youngest; values outside the scheme's range are missing.
 
     See Also
     --------

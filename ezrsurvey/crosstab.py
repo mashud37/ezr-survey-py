@@ -5,11 +5,21 @@ import pandas as pd
 
 from .coerce import ensure_numeric
 from .dataset import col_label, resolve_data_columns
-from .orders import order_for
+from .orders import factor_order, order_for
 from .percentage import drop_rows
-from .rbase import as_character, factor, is_missing, match_arg, r_mean, r_round, unique_values, warn
+from .rbase import (
+    as_character,
+    factor,
+    is_categorical,
+    is_missing,
+    match_arg,
+    r_mean,
+    r_round,
+    unique_values,
+    warn,
+)
 from .recode import na_blank
-from .tables import group_positions, pivot_wider, restore_types
+from .tables import group_positions, pivot_wider
 from .weights import resolve_weights, weighted_mean
 
 CELLS = ["count", "row_pct", "col_pct", "total_pct"]
@@ -53,33 +63,28 @@ def order_rank(values, levels=None):
     return ranks
 
 
-def group_cells(frame, x_name, y_name):
-    return group_positions(frame, [x_name, y_name])
-
-
-def value_cells(frame, x_name, y_name, request):
+def value_cells(frame, weighted, request):
     """Each x-by-y cell's aggregate of the value column: fn, or the weighted mean when weighted."""
     rows = []
-    for group in group_cells(frame, x_name, y_name):
+    for group in group_positions(frame, [".x", ".y"]):
         block = frame.iloc[group["positions"]]
-        values = block[request["value"]]
-        if request["weighted"]:
-            cell = summarise_cell_wtd(values, block[".w"], request["na_rm"])
+        if weighted:
+            cell = summarise_cell_wtd(block[".v"], block[".w"], request["na_rm"])
         else:
-            cell = summarise_cell(values, request["fn"], request["na_rm"])
-        rows.append({x_name: group["values"][0], y_name: group["values"][1], "value": r_round(cell, request["digits"])})
-    return pd.DataFrame(rows, columns=[x_name, y_name, "value"])
+            cell = summarise_cell(block[".v"], request["fn"] or mean_or_missing, request["na_rm"])
+        rows.append({".x": group["values"][0], ".y": group["values"][1], ".value": r_round(cell, request["digits"])})
+    return pd.DataFrame(rows, columns=[".x", ".y", ".value"])
 
 
-def count_cells(frame, x_name, y_name, weighted):
+def count_cells(frame, weighted):
     rows = []
-    for group in group_cells(frame, x_name, y_name):
+    for group in group_positions(frame, [".x", ".y"]):
         if weighted:
             count = float(frame[".w"].iloc[group["positions"]].sum())
         else:
             count = len(group["positions"])
-        rows.append({x_name: group["values"][0], y_name: group["values"][1], "n": count})
-    return pd.DataFrame(rows, columns=[x_name, y_name, "n"])
+        rows.append({".x": group["values"][0], ".y": group["values"][1], "n": count})
+    return pd.DataFrame(rows, columns=[".x", ".y", "n"])
 
 
 def share_within(counts, group_name, digits):
@@ -94,15 +99,63 @@ def share_within(counts, group_name, digits):
     return values
 
 
-def cell_values(counts, cell, x_name, y_name, digits):
+def cell_values(counts, cell, digits):
     if cell == "count":
         return [r_round(n, 0) for n in counts["n"]]
     if cell == "row_pct":
-        return share_within(counts, x_name, digits)
+        return share_within(counts, ".x", digits)
     if cell == "col_pct":
-        return share_within(counts, y_name, digits)
+        return share_within(counts, ".y", digits)
     total = counts["n"].sum()
     return [r_round(n / total * 100, digits) for n in counts["n"]]
+
+
+def crosstab_long(data, x_name, y_name, request):
+    """The crosstab cells in long form, under the fixed names ``.x``, ``.y`` and ``.value``.
+
+    The counting runs on a frame built here from only the columns it needs, so
+    a survey column called ``value`` or ``n`` cannot collide with the names the
+    counting uses. The banner table reads this directly for the same reason.
+
+    Args:
+        data: The survey DataFrame.
+        x_name: The row question.
+        y_name: The column question.
+        request: A dict of ``cell``, ``value`` (a column name or None), ``fn``,
+            ``digits``, ``na_rm``, ``drop`` and ``weights``.
+
+    Returns:
+        A DataFrame of ``.x``, ``.y`` and ``.value``, one row per cell, with
+        categorical margins wherever an order applies.
+    """
+    w = resolve_weights(data, request["weights"])
+    weighted = w is not None
+    frame = pd.DataFrame({".x": data[x_name].to_numpy(), ".y": data[y_name].to_numpy()})
+    if request["value"] is not None:
+        frame[".v"] = data[request["value"]].to_numpy()
+    if weighted:
+        frame[".w"] = w
+    if request["na_rm"]:
+        frame[".x"] = na_blank(frame[".x"]).to_numpy()
+        frame[".y"] = na_blank(frame[".y"]).to_numpy()
+        frame = frame[frame[".x"].notna() & frame[".y"].notna()]
+    frame = drop_rows(frame, ".x", request["drop"])
+    frame = drop_rows(frame, ".y", request["drop"]).reset_index(drop=True)
+    if request["value"] is not None:
+        if weighted and request["fn"] is not None:
+            warn("Weighted crosstab aggregates `value` with the weighted mean; `fn` is ignored.")
+        out = value_cells(frame, weighted, request)
+    else:
+        counts = count_cells(frame, weighted)
+        counts[".value"] = cell_values(counts, request["cell"], request["digits"])
+        out = counts[[".x", ".y", ".value"]]
+    x_levels = order_for(x_name)
+    if x_levels is None:
+        x_levels = factor_order(data[x_name], out[".x"])
+    y_levels = order_for(y_name)
+    if y_levels is None:
+        y_levels = factor_order(data[y_name], out[".y"])
+    return apply_margin_orders(out, x_levels, y_levels)
 
 
 def crosstab(  # lint-style: ignore FN001,FN003
@@ -127,9 +180,10 @@ def crosstab(  # lint-style: ignore FN001,FN003
     table, and "count" is the raw frequency. Supplying a numeric `value` switches
     the cells to an aggregate of that column (by default the mean), which
     answers questions like "what is the average NPS for each region by gender?".
-    Blanks and non-answers in `x`/`y` are dropped when ``na_rm=True``, and any
+    Blanks and non-answers in `x`/`y` are dropped when ``na_rm=True``. Any
     registered orders (`register_order()`) set the row and column ordering
-    automatically.
+    automatically; a categorical without one keeps its own category order;
+    anything else stays in data order.
 
     Parameters
     ----------
@@ -171,6 +225,8 @@ def crosstab(  # lint-style: ignore FN001,FN003
     -------
     pandas.DataFrame
         Wide (`x` plus one column per `y` level) or long (`x`, `y`, ``value``).
+        The long form refuses an `x` or `y` that is itself called ``value``,
+        since the two columns would share a name.
 
     See Also
     --------
@@ -187,54 +243,43 @@ def crosstab(  # lint-style: ignore FN001,FN003
     cell = match_arg(cell, CELLS)
     x_name = col_label(resolved["columns"][0], data, argument="x")
     y_name = col_label(resolved["columns"][1], data, argument="y")
-    has_value = value is not None
+    value_name = None
+    if value is not None:
+        value_name = col_label(value, data, argument="value")
     if digits is None:
-        digits = 2 if has_value else 0
-    w = resolve_weights(data, weights)
-    weighted = w is not None
-    frame = data.reset_index(drop=True)
-    if weighted:
-        frame = frame.assign(**{".w": w})
-    if na_rm:
-        frame = frame.assign(**{x_name: na_blank(frame[x_name]).to_numpy(), y_name: na_blank(frame[y_name]).to_numpy()})
-        frame = frame[frame[x_name].notna() & frame[y_name].notna()]
-    frame = drop_rows(frame, x_name, drop)
-    frame = drop_rows(frame, y_name, drop).reset_index(drop=True)
-    if has_value:
-        value_name = col_label(value, frame, argument="value")
-        if weighted and fn is not None:
-            warn("Weighted crosstab aggregates `value` with the weighted mean; `fn` is ignored.")
-        request = {
-            "value": value_name,
-            "fn": fn or mean_or_missing,
-            "weighted": weighted,
-            "na_rm": na_rm,
-            "digits": digits,
-        }
-        out = value_cells(frame, x_name, y_name, request)
-    else:
-        counts = count_cells(frame, x_name, y_name, weighted)
-        counts["value"] = cell_values(counts, cell, x_name, y_name, digits)
-        out = counts[[x_name, y_name, "value"]]
-    out = restore_types(out.copy(), frame, [x_name, y_name])
-    out = apply_margin_orders(out, x_name, y_name)
+        digits = 0 if value_name is None else 2
+    request = {
+        "cell": cell,
+        "value": value_name,
+        "fn": fn,
+        "digits": digits,
+        "na_rm": na_rm,
+        "drop": drop,
+        "weights": weights,
+    }
+    out = crosstab_long(data, x_name, y_name, request)
     if wide:
-        out = pivot_wider(out, names_from=y_name, values_from="value")
-    return out.reset_index(drop=True)
+        out = pivot_wider(out, names_from=".y", values_from=".value", names_sort=is_categorical(out[".y"]))
+        return out.rename(columns={".x": x_name})
+    if "value" in (x_name, y_name):
+        raise ValueError(
+            "crosstab(wide=False) puts the cells in a column called `value`, which is also "
+            "the name of a question here. Rename that column, or use wide=True."
+        )
+    out.columns = [x_name, y_name, "value"]
+    return out
 
 
-def apply_margin_orders(out, x_name, y_name):
-    """Put both margins in their registered order, levels and rows alike."""
-    x_levels = order_for(x_name)
-    y_levels = order_for(y_name)
+def apply_margin_orders(out, x_levels, y_levels):
+    """Put both margins in their order, levels and rows alike, where they have one."""
     ordered = out.copy()
     if x_levels is not None:
-        ordered[x_name] = factor(as_character(ordered[x_name]), levels=x_levels).values
+        ordered[".x"] = factor(as_character(ordered[".x"]), levels=x_levels).values
     if y_levels is not None:
-        ordered[y_name] = factor(as_character(ordered[y_name]), levels=y_levels).values
+        ordered[".y"] = factor(as_character(ordered[".y"]), levels=y_levels).values
     if x_levels is None and y_levels is None:
-        return ordered
-    x_ranks = order_rank(ordered[x_name], x_levels)
-    y_ranks = order_rank(ordered[y_name], y_levels)
+        return ordered.reset_index(drop=True)
+    x_ranks = order_rank(ordered[".x"], x_levels)
+    y_ranks = order_rank(ordered[".y"], y_levels)
     positions = sorted(range(len(ordered)), key=lambda row: (x_ranks[row], y_ranks[row]))
     return ordered.iloc[positions].reset_index(drop=True)

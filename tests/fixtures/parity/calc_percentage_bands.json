@@ -1,0 +1,19 @@
+{
+  "messages": [],
+  "warnings": [],
+  "kind": "frame",
+  "columns": {
+    "band": {
+      "type": "ordered",
+      "levels": ["40-70k", "100-150k"]
+    },
+    "n": {
+      "type": "integer"
+    },
+    "pct": {
+      "type": "numeric"
+    }
+  },
+  "names": ["band", "n", "pct"],
+  "attrs": {}
+}

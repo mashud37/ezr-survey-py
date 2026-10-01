@@ -20,6 +20,19 @@ PACKED = pd.DataFrame(
 )
 GENDER_TARGET = {"variable": "demo_gender", "Male": 0.49, "Female": 0.5, "Non-binary": 0.01}
 SATIS_LEVELS = ["Very unlikely", "Unlikely", "Not sure", "Likely", "Very likely"]
+NAMED_CELLS = pd.DataFrame(
+    {
+        "value": ["Low", "High", "High", "Low", "High", "Low"],
+        "n": ["A", "A", "B", "B", "B", "A"],
+    }
+)
+AGREE_LEVELS = ["Strongly disagree", "Disagree", "Agree", "Strongly agree"]
+AGREE_FACTORS = pd.DataFrame(
+    {
+        "agree": pd.Categorical(["Disagree", "Agree", "Strongly agree", "Agree"], categories=AGREE_LEVELS),
+        "group": pd.Categorical(["Old", "Young", "Old", "Young"], categories=["Young", "Old"]),
+    }
+)
 
 
 # ---- Coerce and recode ----
@@ -322,6 +335,17 @@ def calc_percentage_batch_by():
     return ez.calc_percentage_batch(podracing_survey, ez.starts_with("partner_recall"), by="demo_gender", sort="desc")
 
 
+def calc_percentage_factor_order():
+    answers = ["Agree", "Strongly disagree", "Disagree", "Agree", "Strongly agree", ""]
+    d = pd.DataFrame({"agree": pd.Categorical(answers, categories=AGREE_LEVELS + [""])})
+    return ez.calc_percentage(d, "agree")
+
+
+def calc_percentage_bands():
+    bands = ez.bin_numeric([45, 120, 60], breaks=[40, 70, 100, 150], labels=["40-70k", "70-100k", "100-150k"])
+    return ez.calc_percentage(pd.DataFrame({"band": bands}), "band")
+
+
 # ---- Weights ----
 
 
@@ -378,6 +402,28 @@ def crosstab_registered():
 def crosstab_weighted():
     target = {"variable": "collector", "email": 1, "panel": 1, "socials": 1, "in_app": 1}
     return ez.crosstab(podracing_survey, "region", "demo_gender", cell="col_pct", weights=target)
+
+
+def crosstab_named_value():
+    return ez.crosstab(NAMED_CELLS, "value", "n")
+
+
+def crosstab_named_n_row_pct():
+    return ez.crosstab(NAMED_CELLS, "n", "value", cell="row_pct")
+
+
+def crosstab_named_value_long():
+    return ez.crosstab(NAMED_CELLS, "value", "n", wide=False)
+
+
+def crosstab_factor_order():
+    return ez.crosstab(AGREE_FACTORS, "agree", "group")
+
+
+def crosstab_registered_columns():
+    ez.register_order("size", ["S", "M", "L"], vars="size")
+    d = pd.DataFrame({"shop": ["x", "x", "y", "y"], "size": ["M", "L", "S", "M"]})
+    return ez.crosstab(d, "shop", "size")
 
 
 def compare_values_basic():
@@ -500,6 +546,14 @@ def banner_mean_error():
 
 def banner_empty():
     return ez.crosstab_banner(podracing_survey.iloc[0:0], rows="demo_gender", cols="region")
+
+
+def banner_named_value():
+    return ez.crosstab_banner(NAMED_CELLS, rows="value", cols="n", cell="count")
+
+
+def banner_factor_order():
+    return ez.crosstab_banner(AGREE_FACTORS, rows="agree", cols="group")
 
 
 # ---- Drivers ----
