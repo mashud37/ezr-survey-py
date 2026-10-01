@@ -5,7 +5,12 @@ project:
 website:
   title: ezrsurvey
   description: Survey analysis helpers for pandas, ported from the R package ezrsurvey.
+  site-url: https://mashud37.github.io/ezr-survey-py/
+  repo-url: https://github.com/mashud37/ezr-survey-py
   navbar:
+    right:
+      - icon: github
+        href: https://github.com/mashud37/ezr-survey-py
     left:
       - href: articles/get-started.qmd
         text: Get started

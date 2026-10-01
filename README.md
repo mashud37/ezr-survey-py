@@ -13,6 +13,9 @@ pandas and plotnine, and ships the same two simulated datasets as the R package,
 `podracing_survey` (a Star Wars pod-racing fan survey) and `shopping_survey` (an Edwardian
 shopping survey), so every example runs out of the box.
 
+The documentation, with articles and a page for every function, is at
+<https://mashud37.github.io/ezr-survey-py/>.
+
 ## Installation
 
 ```sh

@@ -43,6 +43,9 @@ test = ["pytest>=7", "openpyxl>=3.1"]
 docs = ["quartodoc>=0.11", "griffe<2", "jupyter", "tabulate"]
 
 [project.urls]
+Homepage = "https://github.com/mashud37/ezr-survey-py"
+Documentation = "https://mashud37.github.io/ezr-survey-py/"
+Issues = "https://github.com/mashud37/ezr-survey-py/issues"
 "R original" = "https://github.com/mashud37/ezr-research/tree/main/ezr-survey"
 
 [tool.hatch.build.targets.sdist]
