@@ -3,6 +3,7 @@
 import math
 import statistics
 
+import pandas as pd
 import pytest
 
 import ezrsurvey as ez
@@ -76,3 +77,18 @@ def test_precision_summary_skips_ids_and_free_text():
     table = ez.precision_summary(ez.podracing_survey)["table"]
     assert "respondent_id" not in table["variable"].tolist()
     assert "nps_com" not in table["variable"].tolist()
+
+
+def test_rse_of_a_zero_estimate_follows_r():
+    assert math.isnan(ez.rse(0, 0))
+    assert math.isinf(ez.rse(0, 1))
+    assert ez.rse(1, 0) == 0
+
+
+def test_calc_summary_with_both_infinities_gives_nan_as_r_does():
+    data = pd.DataFrame({"spend": [1000.0] * 45 + [math.inf, -math.inf, math.nan, math.nan, 0.0]})
+    out = ez.calc_summary(data, "spend")
+    assert out["n"].tolist() == [48]
+    assert math.isnan(out["mean"].iloc[0])
+    assert out["median"].tolist() == [1000.0]
+    assert math.isnan(out["sd"].iloc[0])

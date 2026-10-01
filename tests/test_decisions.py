@@ -130,3 +130,7 @@ def test_scale_y_pct_returns_a_scale():
     from plotnine.scales.scale_continuous import scale_continuous
 
     assert isinstance(ez.scale_y_pct([10, 40]), scale_continuous)
+
+
+def test_nice_max_passes_an_infinite_maximum_through():
+    assert ez.nice_max([1000, math.inf, -math.inf, math.nan, 0]) == math.inf

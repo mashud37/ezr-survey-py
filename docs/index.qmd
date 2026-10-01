@@ -1,0 +1,49 @@
+---
+title: "ezrsurvey for Python"
+---
+
+> This is the Python port of the R package
+> [`ezrsurvey`](https://github.com/mashud37/ezr-research/tree/main/ezr-survey). The R package
+> is the original and the specification: every function here has the same name, arguments,
+> defaults and results as its R counterpart.
+
+`ezrsurvey` turns the things consumer-survey analysts do over and over into single-line helpers:
+loading and stacking survey exports, turning questions into percentages, recoding rating and Net
+Promoter scales, weighting, cross-tabulating, modelling what drives satisfaction, checking
+sampling precision, and producing static, presentation-ready charts, workbooks and decks. It is
+built on pandas and plotnine, and ships two simulated datasets, `podracing_survey` and
+`shopping_survey`, so every example runs out of the box.
+
+## Installation
+
+```sh
+pip install "ezrsurvey[all]"
+```
+
+The core needs pandas, numpy, plotnine and PyYAML. The extras add Excel output (`excel`),
+PowerPoint and Word (`reports`), the random-forest driver model (`drivers`), the quotes treemap
+(`quotes`) and non-overlapping chart labels (`repel`); `all` installs every one.
+
+## A first look
+
+```python
+import ezrsurvey as ez
+
+survey = ez.podracing_survey
+
+ez.calc_percentage(survey, "demo_gender", sort="desc")
+ez.crosstab_banner(survey, rows=["satis_return", "nps_value"], cols=["demo_gender", "region"])
+ez.plot_rating_grid(survey, "ratings_")
+ez.ipm_model(survey, "nps_value", "ratings_").pipe(ez.plot_ipm)
+```
+
+[Get started](articles/get-started.qmd) walks through a whole analysis, and the
+[reference](reference/index.qmd) lists every function by what it is for.
+
+## Coming from R
+
+Column names become strings, `c()` becomes a list, the tidyselect helpers are exported by the
+package (`ez.starts_with()`), and `%>%` becomes `DataFrame.pipe()`. `from` and `lambda` are
+reserved words in Python, so those arguments are spelled `from_` and `lambda_`. Options and
+profiles are shared with the R package, so an R user and a Python user on one project read the
+same `.ezrsurvey.yml`.

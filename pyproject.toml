@@ -38,7 +38,9 @@ all = [
     "squarify>=0.4",
     "adjustText>=1.0",
 ]
-test = ["pytest>=7"]
+test = ["pytest>=7", "openpyxl>=3.1"]
+# quartodoc 0.11 passes griffe an option that griffe 2 removed.
+docs = ["quartodoc>=0.11", "griffe<2", "jupyter", "tabulate"]
 
 [project.urls]
 "R original" = "https://github.com/mashud37/ezr-research/tree/main/ezr-survey"

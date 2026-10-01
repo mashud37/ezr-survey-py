@@ -8,7 +8,7 @@ from plotnine import annotate, geom_hline, geom_vline
 
 from .palettes import pal_nps, pal_rating, pal_rating5
 from .rbase import match_arg
-from .theme import PT
+from .theme import LINE_SIZE
 
 AXES = ["x", "y"]
 BAND_TEXT_SIZE = 11
@@ -121,7 +121,7 @@ def annotate_bands(plot, bands, axis="x", at=None, label_offset=None, labels=Tru
     style = {
         "text_colour": text_colour,
         "text_size": BAND_TEXT_SIZE if text_size is None else text_size,
-        "linewidth": linewidth * PT * 0.75,
+        "linewidth": linewidth * LINE_SIZE,
     }
     out = plot
     for band in bands.to_dict("records"):
@@ -171,7 +171,7 @@ def mark_value(plot, value, axis="x", colour="black", linewidth=1, label=None, *
     >>> mark_value(p, 20, axis="y", label="Target 20%")
     """
     axis = match_arg(axis, AXES)
-    size = linewidth * PT * 0.75
+    size = linewidth * LINE_SIZE
     if axis == "x":
         out = plot + geom_vline(xintercept=value, color=colour, size=size)
     else:

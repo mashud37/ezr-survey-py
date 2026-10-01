@@ -1,0 +1,161 @@
+---
+title: "PowerPoint decks"
+jupyter: python3
+---
+
+```{python}
+import ezrsurvey as ez
+```
+
+The deck is where a survey project ends, and rebuilding it by hand every wave is
+where the time goes. Two routes are provided: one call for a deck with no
+particular shape, and a slide-at-a-time builder for a deck that has one. Both
+write a real `.pptx` through `python-pptx`, so the result opens in PowerPoint,
+Keynote and Google Slides. They need the `reports` extra:
+
+```bash
+pip install "ezrsurvey[reports]"
+```
+
+Everything below writes into a temporary folder. In your own work a bare file
+name lands in `ezrsurvey-outputs/`.
+
+```{python}
+import os
+import tempfile
+
+deck_dir = tempfile.mkdtemp()
+```
+
+## One call
+
+Give `report_deck()` a dict. The keys become slide titles, and each value
+becomes the slide's content.
+
+```{python}
+ez.report_deck(
+    {
+        "Who follows pod racing?": ez.plot_bars(ez.calc_percentage(ez.podracing_survey, "demo_gender")),
+        "How likely are they to recommend it?": ez.calc_nps(ez.podracing_survey, "nps_value"),
+    },
+    path=os.path.join(deck_dir, "overview.pptx"),
+    title="Pod-Racing Fan Survey",
+)
+```
+
+The content is handled according to what it is. A chart becomes an image sized
+to the layout's content placeholder, a data frame becomes a table sized to fill
+the slide, and a list of strings becomes a bullet list.
+
+## A slide at a time
+
+A deck with chapters, dividers and commentary is assembled step by step. Each
+call takes the document and returns it, so the deck is built by passing it from
+one call to the next.
+
+```{python}
+drivers = ez.ipm_model(ez.podracing_survey, "nps_value", "ratings_")
+
+deck = ez.report_new("pptx")
+deck = ez.report_title_slide(deck, "Pod-Racing Fan Survey", subtitle="1,000 fans | Fieldwork 2026")
+deck = ez.report_section(deck, "RECOMMENDATION")
+deck = ez.report_slide(
+    deck,
+    "How likely are you to recommend pod racing?",
+    ez.plot_nps(ez.podracing_survey, "nps_value"),
+)
+deck = ez.report_section(deck, "RATINGS")
+deck = ez.report_slide(deck, "Which aspects matter most, and which fall short?", ez.plot_ipm(drivers))
+deck = ez.report_add_slide(deck, "What we should fix first")
+deck = ez.report_add_text(deck, [
+    "Value and commentary sit lowest and matter most.",
+    "Atmosphere is already strong; further gains there move nothing.",
+])
+ez.report_save(deck, os.path.join(deck_dir, "deck.pptx"))
+```
+
+`report_slide()` is title plus one thing, which is most slides.
+`report_add_slide()` opens a slide you then add to with `report_add_plot()`,
+`report_add_table()` and `report_add_text()`, for the slides that carry more than
+one element.
+
+The same calls produce a Word document. Sections become headings rather than
+dividers:
+
+```{python}
+doc = ez.report_new("docx")
+doc = ez.report_section(doc, "Pod-Racing Fan Survey")
+doc = ez.report_add_text(doc, "Net Promoter Score and the drivers behind it.")
+doc = ez.report_add_table(doc, drivers)
+ez.report_save(doc, os.path.join(deck_dir, "report.docx"))
+```
+
+## Your organisation's template
+
+Point ezrsurvey at a template once and everything downstream matches it:
+
+```python
+ez.use_brand("brand/org-template.pptx")
+```
+
+That reads the template's theme: accent colours become the palette behind
+`plot_bars()`, `pal_brand()` and `scale_fill_brand()`, the body typeface becomes
+the default for `theme_ezrsurvey()`, and the file itself becomes the reference
+document for `report_new()`, `report_deck()` and `scaffold_report()`. With no
+template to hand, set the values directly:
+
+```{python}
+ez.use_brand(colors=["#0B5394", "#E69138"], fonts="Georgia", quiet=True)
+palette = ez.pal_brand()
+ez.clear_brand()
+palette
+```
+
+Both live in an `.ezrsurvey.yml` profile if you want them for every project. The
+profile is the same file the R package reads, so a team working in both
+languages shares one. The semantic palettes keep their meaning whatever the
+brand: `pal_rating` and `pal_nps` stay red-amber-green, because recolouring a
+detractor to match a logo would make the chart lie.
+
+> A brand typeface only reaches the chart when it is installed on the machine
+> drawing it. If it is not, charts fall back to the default sans-serif and
+> ezrsurvey says so once, naming the font.
+
+Layouts are chosen by inspecting a template's placeholders rather than their
+names, so a template written in any language works. `report_layouts()` shows
+what yours offers:
+
+```{python}
+ez.report_layouts()
+```
+
+## Without a template
+
+Decks default to the package's own 16:9 template: a full-bleed cover with a
+large title and a subtitle strapline, full-bleed section dividers, and content
+slides carrying a left-aligned title over a slim rule with a live slide number
+in the corner.
+
+```python
+ez.report_deck(items, path="deck.pptx")                   # styled, the default
+ez.report_deck(items, path="deck.pptx", style="plain")    # same palette, no decoration
+ez.report_new("pptx", slide_numbers=False)                # drop the numbering
+```
+
+Charts are drawn at a constant bar thickness whatever the answer count, so a
+three-answer chart and a ten-answer chart sit together in a deck instead of the
+first one's bars turning into slabs. `bar_width` and `bar_ref_items` in
+`ezrsurvey_options()` control it.
+
+## Google Slides
+
+Google Slides imports PowerPoint natively, so the route above is also the Google
+Slides route: build the deck, then use **File > Import slides**, or open the
+`.pptx` straight from Drive.
+
+Chart images, text boxes, bullets, speaker notes and theme colours all survive
+the import. Two things to watch. Fonts outside Google's catalogue are
+substituted, so if Slides is the destination, brand with one that is in it
+(`ez.use_brand(..., fonts="Roboto")`). And intricate table borders simplify.
+Charts are saved as transparent-background PNGs, so they sit cleanly on any
+Slides background.

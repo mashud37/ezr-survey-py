@@ -1,0 +1,19 @@
+---
+title: "Datasets"
+jupyter: python3
+---
+
+Four datasets ship with the package. Each is read on first use and returned as a
+fresh copy, so editing one in a script never changes the next.
+
+```{python}
+#| echo: false
+#| output: asis
+from ezrsurvey.datasets import DATASET_DOCS, DATASET_NAMES, load_dataset
+
+for name in DATASET_NAMES:
+    heading, _, body = DATASET_DOCS[name].partition("\n\n")
+    print(f"## `{name}`\n\n**{heading}**\n\n{body}\n")
+    print(load_dataset(name).head(3).to_markdown(index=False))
+    print()
+```

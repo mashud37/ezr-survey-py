@@ -1,0 +1,125 @@
+---
+title: "Quarto reports"
+jupyter: python3
+---
+
+```{python}
+import ezrsurvey as ez
+```
+
+Building a deck from Python suits a deliverable whose shape you already know. A
+report you will rewrite between waves, or one that has to go out as a web page
+this quarter and a PDF the next, wants a document you can edit rather than a
+script that emits one. `scaffold_report()` writes that document: a Quarto file
+already wired to your data, with the analysis in it, ready to render.
+
+Everything below writes into a temporary folder. In your own work a bare file
+name lands in `ezrsurvey-outputs/`.
+
+```{python}
+import os
+import tempfile
+
+report_dir = tempfile.mkdtemp()
+```
+
+## The scaffold
+
+Pick the output format and you get a `.qmd` set up for it.
+
+```{python}
+path = ez.scaffold_report(
+    "html",
+    path=os.path.join(report_dir, "survey-report.qmd"),
+    title="Q2 Customer Survey",
+    author="Research team",
+    overwrite=True,
+)
+
+os.path.exists(path)
+```
+
+Four formats are supported, and the difference between them is the YAML header
+and the cell settings, not the analysis:
+
+```python
+ez.scaffold_report("html")   # a web page
+ez.scaffold_report("pdf")    # print
+ez.scaffold_report("docx")   # a Word document to be edited further
+ez.scaffold_report("pptx")   # slides
+```
+
+What the file contains is a working report rather than an empty skeleton: setup,
+the data read in, a respondent profile, the headline measures, a driver model, a
+chart or two and a precision appendix, with placeholder narrative between them
+saying what each section is for.
+
+```{python}
+with open(path, encoding="utf-8") as file:
+    print("".join(file.readlines()[:25]))
+```
+
+## Rendering it
+
+Rendering needs the Quarto command-line tool, which is installed on its own
+rather than through pip, and Jupyter, which runs the Python cells:
+
+```bash
+pip install jupyter
+quarto render ezrsurvey-outputs/survey-report.qmd
+```
+
+If Quarto picks up a Python that has no Jupyter in it, point it at the right one
+with the `QUARTO_PYTHON` environment variable; `quarto check jupyter` shows which
+it found.
+
+The scaffold takes the data file as a parameter, so the same report runs against
+the next wave without being edited:
+
+```bash
+quarto render survey-report.qmd -P data:wave-3.csv
+```
+
+## On your own template
+
+The pptx and docx scaffolds accept a reference document, which is how the report
+inherits your organisation's look:
+
+```python
+ez.scaffold_report("pptx", title="Q2 Customer Survey", reference_doc="brand/org-template.pptx")
+```
+
+With `use_brand()` already set, the template it carries is used by default and
+the argument can be left out.
+
+> Quarto's `reference-doc` requires the standard layout names ("Title Slide",
+> "Title and Content" and so on). If your organisation's template renamed its
+> layouts, Quarto will not find them; build that deck with `report_deck()`
+> instead, which reads placeholders rather than names. See
+> [PowerPoint decks](powerpoint-decks.qmd).
+
+## A finished example to copy
+
+The scaffold is a starting point. For a complete worked report on the bundled
+data, with every chart type, real narrative rather than placeholders, and the
+matching deck script beside it:
+
+```{python}
+example_dir = os.path.join(report_dir, "ezrsurvey-example")
+ez.example_report(example_dir, overwrite=True)
+
+sorted(os.listdir(example_dir))
+```
+
+Copy that into a project and adapt it. It is the fastest way to see how the
+pieces fit together in a document rather than one call at a time.
+
+## Which route to take
+
+| You want | Use |
+| --- | --- |
+| A deck from a dict of charts, no shape to control | `report_deck()` |
+| A deck with chapters, commentary and mixed slides | `report_new()` and the `report_*` builders |
+| A document you will edit and re-render each wave | `scaffold_report()` |
+| The same analysis as html, pdf, docx and pptx | `scaffold_report()`, one per format |
+| A worked example to learn from | `example_report()` |

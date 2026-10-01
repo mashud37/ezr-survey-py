@@ -57,7 +57,7 @@ from .recode import LIKERT_LEVELS, nps_group, recode_likert
 from .scales import PercentLabels, blank_labels, label_pct, nice_max, scale_y_pct
 from .select import all_of
 from .tables import group_positions, order_rows
-from .theme import PT, theme_ezrsurvey, theme_ezrsurvey_xy, theme_ezrsurvey_y
+from .theme import LINE_SIZE, PT, theme_ezrsurvey, theme_ezrsurvey_xy, theme_ezrsurvey_y
 
 ORIENTATIONS = ["auto", "cols", "bars"]
 BAR_SORTS = ["auto", "none", "asc", "desc"]
@@ -258,6 +258,7 @@ def plot_bars(  # lint-style: ignore FN001,FN003
     axis_size = max_of(6, 11 - 0.6 * max_of(0, n_items - ezrsurvey_default("bar_cols_max_items")))
     top = max if max is not None else nice_max(values, unit=unit, pad=pad)
     nudge = TEXT_NUDGE_SHARE * top if isinstance(top, (int, float)) and math.isfinite(top) else 0
+    frame["bar_label_at_"] = [min(number + nudge, top) for number in values]
     chart = (
         ggplot(frame, aes(label, value))
         + geom_col(aes(fill="bar_fill_"), width=consistent_bar_width(n_items))
@@ -269,10 +270,10 @@ def plot_bars(  # lint-style: ignore FN001,FN003
     )
     if layout["orientation"] == "bars":
         chart = chart + theme(axis_text_y=element_text(size=axis_size))
-        chart = chart + geom_text(aes(label="bar_label_"), ha="left", nudge_y=nudge, size=layout["size"] * PT) + coord_flip()
+        chart = chart + geom_text(aes(y="bar_label_at_", label="bar_label_"), ha="left", size=layout["size"] * PT) + coord_flip()
     else:
         chart = chart + theme(axis_text_x=element_text(size=axis_size))
-        chart = chart + geom_text(aes(label="bar_label_"), va="bottom", nudge_y=nudge, size=layout["size"] * PT)
+        chart = chart + geom_text(aes(y="bar_label_at_", label="bar_label_"), va="bottom", size=layout["size"] * PT)
     if avg_line:
         chart = chart + geom_hline(yintercept=r_mean(values))
     return chart
@@ -534,7 +535,7 @@ def plot_nps_gauge(score, scale="nps", title=None, height=GAUGE_HEIGHT, label_si
         ggplot(frame)
         + geom_rect(aes(xmin="xmin", xmax="xmax", ymin=0, ymax=height, fill="label"))
         + geom_text(aes(x="xmid", y=height / 2, label="label"), color="white", fontweight="bold", size=label_size)
-        + geom_segment(aes(x="score", xend="score", y="bottom", yend="top"), data=marker, color="black", size=1.2 * PT * 0.75, inherit_aes=False)
+        + geom_segment(aes(x="score", xend="score", y="bottom", yend="top"), data=marker, color="black", size=1.2 * LINE_SIZE, inherit_aes=False)
         + scale_fill_manual(values=dict(zip(bands["label"], bands["colour"])))
         + scale_x_continuous(limits=limits)
         + scale_y_continuous(limits=(0, height))
@@ -709,7 +710,7 @@ def plot_gauges(scores, scales=None, title=None, height=GAUGE_HEIGHT, label_size
         + geom_rect(aes(xmin="xmin", xmax="xmax", ymin="ymin", ymax="ymax", fill="colour"), data=rects)
         + geom_text(aes(x="xmid", y="(ymin + ymax) / 2", label="label"), data=rects[rects["wide"]], color="white", fontweight="bold", size=label_size)
         + geom_text(aes(x="x", y="y", label="label"), data=layout["ticks"], color="#595959", size=TICK_TEXT, va="top")
-        + geom_segment(aes(x="x", xend="x", y="ymin", yend="ymax"), data=layout["markers"], color="black", size=1.2 * PT * 0.75)
+        + geom_segment(aes(x="x", xend="x", y="ymin", yend="ymax"), data=layout["markers"], color="black", size=1.2 * LINE_SIZE)
         + scale_fill_identity()
         + scale_x_continuous(limits=(-0.05, 1.05), expand=(0, 0))
         + scale_y_continuous(

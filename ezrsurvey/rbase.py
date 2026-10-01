@@ -141,8 +141,14 @@ def present_numbers(values):
 
 
 def r_sum(values):
-    """The sum as R's sum() gets it: accumulated beyond double precision, then rounded once."""
-    return math.fsum(present_numbers(values))
+    """The sum as R's sum() gets it: accumulated beyond double precision, then rounded once.
+
+    An infinite value makes the sum infinite, or NaN when both infinities are present, as in R.
+    """
+    numbers = present_numbers(values)
+    if all(math.isfinite(number) for number in numbers):
+        return math.fsum(numbers)
+    return float(sum(numbers))
 
 
 def r_mean(values):
@@ -150,7 +156,9 @@ def r_mean(values):
     numbers = present_numbers(values)
     if not numbers:
         return np.nan
-    mean = math.fsum(numbers) / len(numbers)
+    mean = r_sum(numbers) / len(numbers)
+    if not math.isfinite(mean):
+        return mean
     return mean + math.fsum(number - mean for number in numbers) / len(numbers)
 
 
@@ -269,7 +277,7 @@ def factor(values, levels=None, ordered=False):
             levels = r_sort(distinct)
         else:
             levels = sorted(distinct)
-    levels = list(levels)
+    levels = [level for level in levels if not is_missing(level)]
     cleaned = [value if value in levels else np.nan for value in series]
     categories = pd.Categorical(cleaned, categories=levels, ordered=ordered)
     return pd.Series(categories, index=series.index)

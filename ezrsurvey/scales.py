@@ -57,7 +57,10 @@ def nice_max(x, unit=PCT_UNIT, pad=0):
         raise ValueError("`unit` must be a single positive number.")
     if not values:
         return math.nan
-    steps = math.floor(max(values) / unit) + 1
+    largest = max(values)
+    if not math.isfinite(largest):
+        return largest + pad
+    steps = math.floor(largest / unit) + 1
     return steps * unit + pad
 
 

@@ -162,7 +162,8 @@ def rse(estimate, se):
         estimate = pd.Series(estimate, dtype=float)
     if isinstance(se, (list, tuple)):
         se = pd.Series(se, dtype=float)
-    return se / estimate * 100
+    with np.errstate(divide="ignore", invalid="ignore"):
+        return np.float64(se) / estimate * 100 if np.isscalar(se) else se / estimate * 100
 
 
 def margin_of_error(se, z=Z_95):

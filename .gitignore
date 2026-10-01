@@ -38,9 +38,11 @@ build/
 ezrsurvey-outputs/
 ezrsurvey-example/
 
-# Documentation site build
+# Documentation site build; quartodoc writes the reference pages
 _site/
 .quarto/
+docs/reference/
+docs/objects.json
 
 # Side-by-side chart sheet, regenerated on demand
 parity/charts/

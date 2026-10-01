@@ -1,0 +1,211 @@
+---
+title: "Getting started with ezrsurvey"
+jupyter: python3
+---
+
+`ezrsurvey` turns the things consumer-survey analysts do over and over into
+single-line helpers. This article walks through a typical analysis of the
+bundled `podracing_survey` dataset: from raw answers to percentages, models,
+diagnostics and a chart you could drop on a slide.
+
+```{python}
+import ezrsurvey as ez
+```
+
+## The data
+
+`podracing_survey` is 1,000 simulated respondents with demographics, a 0 to 10
+NPS question, worded feature ratings, multi-select motivations, brand questions
+and open-text comments.
+
+```{python}
+ez.podracing_survey[["respondent_id", "demo_gender", "demo_age", "nps_value"]]
+```
+
+## Percentages without the groupby, count and pivot dance
+
+`calc_percentage()` is the workhorse: counts, percentages and ordering in one
+call. Columns are named as strings.
+
+```{python}
+ez.calc_percentage(ez.podracing_survey, "demo_gender", sort="desc")
+```
+
+Group with `by`, and pivot to a wide cross-tab with `wide=True`:
+
+```{python}
+ez.calc_percentage(ez.podracing_survey, "satis_return", by="region", wide=True)
+```
+
+Check-all-that-apply questions live in a block of columns sharing a prefix;
+`calc_percentage_multi()` handles the per-respondent denominator for you:
+
+```{python}
+ez.calc_percentage_multi(ez.podracing_survey, "motivations_", id="respondent_id", sort="desc")
+```
+
+Spreadsheet exports, Google Forms among them, instead pack every answer a
+respondent ticked into a single cell. The same function recognises that shape
+and separates the answers, so you do not have to reshape anything first:
+
+```{python}
+import pandas as pd
+
+packed = pd.DataFrame({
+    "respondent": [1, 2, 3, 4],
+    "motivations": ["Speed; Drivers", "Speed", "", "Betting; Speed"],
+})
+
+ez.calc_percentage_multi(packed, "motivations", id="respondent", sort="desc")
+```
+
+Note the denominator: three respondents ticked something, so "Speed" is 3 of 3.
+When you need those answers as columns rather than as a table, for a crosstab or
+a filter, `split_multi()` widens them:
+
+```{python}
+ez.split_multi(packed, "motivations")
+```
+
+## Reusable level orders
+
+Rather than retyping `levels=[...]`, register an order once and link it to a
+variable; `calc_percentage()` then applies it automatically.
+
+```{python}
+ez.register_order(
+    "education",
+    levels=[
+        "Primary or less",
+        "Lower secondary",
+        "Upper secondary",
+        "Short-cycle tertiary",
+        "Bachelor or equivalent",
+        "Master or equivalent",
+        "Doctoral or equivalent",
+    ],
+    vars="demo_edu",
+)
+
+ez.calc_percentage(ez.podracing_survey, "demo_edu")
+```
+
+## Net Promoter Score
+
+```{python}
+ez.calc_nps(ez.podracing_survey, "nps_value")
+```
+
+```{python}
+ez.plot_nps(ez.podracing_survey, "nps_value")
+```
+
+## Importance / performance
+
+`ipm_model()` combines driver importance (by default, relative weights against
+the NPS score) with feature performance; `plot_ipm()` draws the matrix. Pass
+`method="forest"` for a random-forest cross-check, which sees non-linear effects
+that relative weights cannot. The forest needs the `drivers` extra
+(`pip install "ezrsurvey[drivers]"`).
+
+```{python}
+model = ez.ipm_model(ez.podracing_survey, "nps_value", "ratings_")
+model
+```
+
+## Comparing two events
+
+For event surveys you often compare this wave with the last. `compare_values()`
+computes the differences and `plot_diff()` draws the change chart.
+
+```{python}
+previous = model.copy()
+previous["performance"] = model["performance"] - [0.3, -0.1, 0.2, 0, 0.1, 0.3]
+
+ez.plot_diff(ez.compare_values(model, previous))
+```
+
+## How precise is it?
+
+`diagnose()` reports the standard error, relative standard error and margin of
+error for any column: numeric (a point estimate) or categorical (a proportion).
+
+```{python}
+ez.diagnose(ez.podracing_survey, "demo_gender", "nps_value")
+```
+
+For a one-shot, plain-language read on the whole study, `precision_summary()`
+picks the point-scale and proportion variables for you and writes the bullet
+points you would otherwise hand-craft for a report appendix:
+
+```{python}
+ez.precision_summary(ez.podracing_survey)
+```
+
+### Why relative standard error?
+
+A standard error on its own is hard to judge: is plus or minus 0.05 good? It
+depends on the scale. The **relative standard error** (RSE) divides the standard
+error by the estimate, so precision becomes comparable across a 1 to 5 rating
+and a percentage alike. Rating estimates by their RSE is the approach national
+statistical agencies use to decide whether a number is solid enough to publish.
+The [Australian Bureau of
+Statistics](https://www.abs.gov.au/statistics/microdata-tablebuilder/tablebuilder/confidentiality-and-relative-standard-error),
+for example, treats an RSE of 25% or more as not reliable for most purposes,
+marks estimates between 25% and 50% with an asterisk as ones to use with
+caution, and suppresses anything above 50%. ezrsurvey keeps that 25% boundary
+and adds tighter bands below it, because in consumer-survey work the question is
+usually which of several adequately precise numbers to lead with:
+
+| RSE | Rating |
+|---|---|
+| under 5% | high precision |
+| under 10% | precise |
+| under 15% | satisfactory |
+| under 25% | use with caution |
+| 25% or more | likely reliability issues |
+
+For proportions, the margin of error is widest at a 50/50 split
+(`sqrt(0.5 * 0.5 / n)`), so a single worst-case percentage-point figure at your
+achieved sample size bounds every percentage in the study, which is why
+`precision_summary()` reports it.
+
+## Saving and exporting
+
+Every table and chart has a one-line save. A bare file name lands in an
+`ezrsurvey-outputs/` folder, created on demand, so a script's results collect in
+one place instead of scattering through the working directory; pass a path with
+a directory in it (`"./gender.xlsx"`, `"tables/gender.xlsx"`, anything absolute)
+to put a file exactly where you want it. The first save of a session says which
+folder it used, so nothing goes missing. Excel files need the `excel` extra.
+
+```python
+ez.save_data(ez.calc_percentage(ez.podracing_survey, "demo_gender"), "gender.xlsx")
+ez.save_plot(ez.plot_nps(ez.podracing_survey, "nps_value"), "nps.png")
+
+# several tables, one tab each
+ez.export_xlsx(
+    gender=ez.calc_percentage(ez.podracing_survey, "demo_gender"),
+    job=ez.calc_percentage(ez.podracing_survey, "demo_job"),
+    path="summary.xlsx",
+)
+```
+
+Every helper also takes the data frame first, so a pandas method chain works
+with `.pipe()`:
+
+```{python}
+ez.podracing_survey.pipe(ez.calc_percentage, "demo_job", sort="desc")
+```
+
+## Where to next
+
+* Set persistent defaults with `ezrsurvey_options()` and a profile
+  (`use_ezrsurvey_profile()`).
+* Build a deck with `report_deck()` or scaffold a Quarto report with
+  `scaffold_report()`, which drops the `.qmd` beside where its render will land.
+
+```{python}
+#| include: false
+ez.remove_order("education")
+```

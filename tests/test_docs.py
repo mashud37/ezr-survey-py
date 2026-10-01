@@ -3,11 +3,13 @@
 import csv
 import inspect
 import os
+import re
 import warnings
 from pathlib import Path
 
 import pandas as pd
 import pytest
+import yaml
 
 import ezrsurvey as ez
 from ezrsurvey.families import FAMILIES
@@ -15,6 +17,8 @@ from ezrsurvey.families import FAMILIES
 ROOT = Path(__file__).resolve().parent.parent
 DATASETS = {"podracing_survey", "shopping_survey", "country_region", "currency_rates"}
 PALETTES = {"pal_neutral", "pal_nps", "pal_rating", "pal_sequential_blue"}
+ARTICLES = sorted(path.name for path in (ROOT / "docs" / "articles").glob("*.qmd"))
+PYTHON_CELL = re.compile(r"```\{python\}\n(.*?)```", re.S)
 
 
 def exported_callables():
@@ -90,3 +94,35 @@ def test_every_example_runs(name, tmp_path, monkeypatch):
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
         exec(compile(code, f"<example {name}>", "exec"), namespace)
+
+
+def test_site_reference_follows_the_families():
+    with open(ROOT / "docs" / "_quarto.yml", encoding="utf-8") as file:
+        sections = yaml.safe_load(file)["quartodoc"]["sections"]
+    expected = []
+    for key, family in FAMILIES.items():
+        if key != "data":
+            expected.append({"title": family["title"], "desc": family["desc"], "contents": family["names"]})
+    assert sections == expected
+
+
+@pytest.mark.parametrize("article", ARTICLES)
+def test_every_article_runs(article, tmp_path, monkeypatch):
+    text = (ROOT / "docs" / "articles" / article).read_text(encoding="utf-8")
+    monkeypatch.chdir(tmp_path)
+    namespace = {}
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        for number, cell in enumerate(PYTHON_CELL.findall(text), start=1):
+            exec(compile(cell, f"<{article} cell {number}>", "exec"), namespace)
+
+
+def test_readme_tour_runs(tmp_path, monkeypatch):
+    text = (ROOT / "README.md").read_text(encoding="utf-8")
+    tour = text[text.index("## The 60-second tour"):]
+    code = tour[tour.index("```python") + len("```python"):]
+    code = code[:code.index("```")]
+    monkeypatch.chdir(tmp_path)
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        exec(compile(code, "<README tour>", "exec"), {})

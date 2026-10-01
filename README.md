@@ -78,7 +78,7 @@ ez.diagnose(survey, "demo_gender", ez.starts_with("ratings_"))
 
 # 6. Quick saves; a bare name lands in ezrsurvey-outputs/
 ez.calc_percentage(survey, "demo_gender").pipe(ez.save_data, "gender.xlsx")
-ez.plot_bars(ez.calc_percentage(survey, "demo_gender")).pipe(ez.save_plot, "gender.svg")
+ez.save_plot(ez.plot_bars(ez.calc_percentage(survey, "demo_gender")), "gender.svg")
 ez.export_summary_xlsx(survey, "demo_gender", "satis_return", "nps_value")
 ```
 
@@ -121,8 +121,24 @@ tests/            one test file per R test file, and the parity tests against R'
 parity/           the R script that writes the golden outputs the parity tests compare against
 data-raw/         the R script that exports the bundled datasets to CSV
 sync/             the index that keeps the port in step with the R package
+docs/             the documentation site: articles, the datasets page and the reference config
 CONVENTIONS.md    how the R package's rules read in Python, and where the port differs
 ```
+
+## Documentation site
+
+The site is built with quartodoc, which writes a reference page per function grouped as
+`ezrsurvey/families.py` groups them, and Quarto, which renders those pages and the articles:
+
+```sh
+pip install -e ".[all,docs]"
+cd docs
+quartodoc build
+quarto render
+```
+
+The finished site lands in `docs/_site/`. `pytest` runs every article's code, so an article that
+stops working fails the tests before it fails the site.
 
 ## Keeping in step with R
 

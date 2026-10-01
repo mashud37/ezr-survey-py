@@ -1,5 +1,6 @@
 """Give charts the ezrsurvey look: no ticks or chart junk, bold centred titles, optional faint gridlines and transparency. Every plot helper applies one of these themes."""
 
+import math
 import warnings
 
 from matplotlib import font_manager
@@ -9,6 +10,8 @@ from .config import ezrsurvey_default
 from .rbase import message
 
 PT = 72.27 / 25.4
+# ggplot2 draws linewidth 1 as 0.75 * PT points wide; plotnine draws line size 1 as sqrt(pi) points.
+LINE_SIZE = PT * 0.75 / math.sqrt(math.pi)
 BASE_SIZE = 11
 FALLBACK_FAMILY = "sans-serif"
 GRID_COLOUR = "#F7F7F7"

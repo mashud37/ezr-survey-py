@@ -1,0 +1,165 @@
+---
+title: "Countries, regions and currency"
+jupyter: python3
+---
+
+```{python}
+import pandas as pd
+
+import ezrsurvey as ez
+```
+
+Two columns make a multi-country study harder than a single-market one. The
+country question is usually free text, so it comes back holding every spelling a
+person can produce. And if respondents answered about money in their own
+currency, the amounts column cannot be averaged at all.
+
+## The country column people typed
+
+On one real open salary survey of 26,232 people, nine thousand wrote "United
+States", eight thousand wrote "USA", two and a half thousand wrote "US", and
+several hundred more wrote "U.S.", "Usa" or "usa". Matching on the name as typed
+resolved about half the column.
+
+`recode_region()` folds the answer down before looking it up. Case, punctuation,
+accents and a leading "the" all stop mattering, and then a table of the
+spellings people actually use is tried.
+
+```{python}
+ez.recode_region(["United States", "USA", "U.S.", "Estados Unidos"])
+```
+
+It carries the constituent countries of the United Kingdom, which a UK
+respondent is as likely to write as the country itself:
+
+```{python}
+ez.recode_region(["England", "Scotland", "Wales", "Northern Ireland"])
+```
+
+Endonyms, because a survey fielded in more than one language collects them:
+
+```{python}
+ez.recode_region(["Deutschland", "Brasil", "Espana", "Osterreich"])
+```
+
+And the official ISO 3166-1 names, which is what a questionnaire built on the
+standard puts in front of a respondent, in either word order:
+
+```{python}
+ez.recode_region(["Viet Nam", "Syrian Arab Republic", "Republic of Moldova", "Cabo Verde", "Eswatini"])
+```
+
+The fold is done letter by letter rather than left to the platform's
+transliteration, so a name carrying an accent matches the same way on Windows,
+macOS and Linux:
+
+```{python}
+ez.recode_region(["Côte d'Ivoire", "Réunion", "Türkiye"])
+```
+
+## Adding the column
+
+`add_region()` does the same thing to a data frame, and `subregion=True` adds
+the finer grouping alongside:
+
+```{python}
+survey = ez.add_region(ez.podracing_survey, "demo_country", subregion=True)
+
+ez.calc_percentage(survey, "region", sort="desc")
+```
+
+```{python}
+ez.calc_percentage(survey, "subregion", sort="desc")
+```
+
+Anything that did not match comes back missing with a warning naming the
+values, because at that point what is left is genuine typos worth seeing rather
+than spellings worth supporting.
+
+## Reporting against the standard
+
+A client who consolidates research across agencies wants countries coded to ISO
+3166-1, not to whatever names this analyst happened to pick. A column already
+coded that way needs no preparation:
+
+```{python}
+ez.recode_region(["US", "GBR", "DE", "JPN", "AUS"])
+```
+
+A two-letter code that is also an ordinary English word is only read as a
+country when it was typed in capitals, so `"NO"` is Norway and `"no"` is
+somebody answering a different question:
+
+```{python}
+ez.recode_region(["NO", "no"], quiet=True)
+```
+
+The bundled table carries both codes, so a country name can be replaced by its
+code on the way out. That is the table to join to, because country names differ
+between sources and codes do not:
+
+```{python}
+ez.country_region.head()
+```
+
+```{python}
+codes = ez.country_region[["country", "iso2", "iso3"]]
+coded = survey.merge(codes, left_on="demo_country", right_on="country", how="left")
+
+coded.groupby(["iso3", "region"]).size().sort_values(ascending=False).head(8)
+```
+
+> Namibia's alpha-2 code is the two letters `NA`, not a missing value. It is
+> worth knowing before filtering that column, and before reading a country file
+> with pandas, which treats `"NA"` as missing unless told
+> `keep_default_na=False`. The bundled table already keeps it.
+
+The regions themselves follow the UN M49 sub-regions with two deliberate
+departures, because they are how consumer research buys these markets: the
+Middle East is a region of its own rather than part of Asia and Africa, and the
+Americas are split north and south.
+
+## Money in eleven currencies
+
+A single amount converts with `convert_currency()`. The source currency is
+`from_`, because `from` is a reserved word in Python:
+
+```{python}
+ez.convert_currency(50000, from_="GBP", to="USD")
+```
+
+```{python}
+ez.convert_currency([50000, 60000], from_=["EUR", "CAD"], to="USD")
+```
+
+A whole column converts with `add_currency()`, which takes the currency from a
+second column, so each row is converted at its own rate:
+
+```{python}
+pay = pd.DataFrame({
+    "respondent": [1, 2, 3, 4, 5],
+    "salary": [52000, 61000, 48000, 75000, 39000],
+    "currency": ["GBP", "EUR", "USD", "CAD", "AUD"],
+})
+
+ez.add_currency(pay, "salary", from_="currency", to="EUR", into="salary_eur")
+```
+
+The rates are bundled rather than fetched, so a figure computed today is the
+same figure next year. That is what a published number needs, and it is also why
+they are a dated snapshot rather than live rates.
+
+```{python}
+ez.list_currencies()[:6]
+```
+
+When accuracy matters more than reproducibility, pass your own:
+
+```{python}
+own_rates = {"USD": 1, "GBP": 0.79, "EUR": 0.92}
+ez.convert_currency(50000, from_="GBP", to="EUR", rates=own_rates)
+```
+
+A code the table does not hold is reported rather than guessed at. Real currency
+columns contain things like `"AUD/NZD"` and `"Other"`, and those rows come back
+missing with a warning naming the codes.

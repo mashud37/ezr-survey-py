@@ -133,7 +133,7 @@ def test_crosstab_row_percentages_sum_to_100():
 
 def test_crosstab_aggregates_a_value_column():
     table = ez.crosstab(ez.podracing_survey, "region", "demo_gender", value="nps_value")
-    numbers = table.select_dtypes("number").stack()
+    numbers = table.select_dtypes("number").stack().dropna()
     assert ((numbers >= 0) & (numbers <= 10)).all()
 
 
@@ -151,3 +151,11 @@ def test_batch_stacks_several_questions():
     out = ez.calc_percentage_batch(ez.podracing_survey, "demo_gender", "demo_job")
     assert {"variable", "answer", "n", "pct"} <= set(out.columns)
     assert set(out["variable"]) == {"demo_gender", "demo_job"}
+
+
+def test_levels_from_drop_items_leave_the_dropped_answer_out():
+    data = pd.DataFrame({"age": ["18-24", "25-34", "25-34", "35+"]})
+    levels = ez.drop_items(["18-24", "25-34", "35+", "Prefer not to answer"], items="Prefer not to answer")
+    out = ez.calc_percentage(data, "age", levels=levels)
+    assert list(out["age"].cat.categories) == ["18-24", "25-34", "35+"]
+    assert out["n"].tolist() == [1, 2, 1]

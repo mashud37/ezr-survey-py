@@ -79,6 +79,14 @@ def test_plot_bars_honours_pct_axis_max():
     assert tuple(built.layout.panel_scales_y[0].limits) == (0, 100)
 
 
+def test_plot_bars_keeps_the_label_of_a_bar_near_the_axis_top():
+    table = pd.DataFrame({"age": ["Under 35", "35+"], "n": [26, 74], "pct": [26.0, 74.0]})
+    for orientation in ("cols", "bars"):
+        built = build_plot(ez.plot_bars(table, orientation=orientation))
+        labels = built.layers[-1].data
+        assert labels["y"].notna().all()
+
+
 def test_plot_nps_gauge_builds_for_both_scales():
     assert builds(ez.plot_nps_gauge(42))
     assert builds(ez.plot_nps_gauge(3.8, scale="rating"))

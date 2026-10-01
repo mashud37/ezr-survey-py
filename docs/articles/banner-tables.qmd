@@ -1,0 +1,174 @@
+---
+title: "Banner tables"
+jupyter: python3
+---
+
+```{python}
+import ezrsurvey as ez
+```
+
+The banner is the table a client actually works from: every question down the
+side, every way of splitting the sample across the top, and one column for the
+sample as a whole. It is the first deliverable of most projects and the one that
+takes longest to build by hand, because it is the same cross-tab written out
+dozens of times.
+
+`crosstab_banner()` writes it in one call.
+
+## The shape of it
+
+Name the questions as `rows` and the splits as `cols`.
+
+```{python}
+ez.crosstab_banner(
+    ez.podracing_survey,
+    rows=["satis_return", "demo_edu"],
+    cols=["demo_gender", "region"],
+)
+```
+
+Three things are worth noticing in that output. Every question keeps its own
+answers as rows, so questions with different scales stack in one table. The
+`Overall` column is the whole sample, which is what a reader compares each group
+against. And the percentages are column percentages: they run down each group,
+so they answer "what does this group look like", not "where do this answer's
+respondents come from".
+
+Selectors work, which is how a block of rating questions goes in:
+
+```{python}
+ez.crosstab_banner(
+    ez.podracing_survey,
+    rows=ez.starts_with("ratings_"),
+    cols="demo_gender",
+)
+```
+
+## Numbers and categories in one table
+
+A numeric question has no answers to count, so counting it would produce a row
+per distinct value. Handed one, the banner switches to a statistics block
+instead, and says so by labelling the rows:
+
+```{python}
+ez.crosstab_banner(
+    ez.podracing_survey,
+    rows=["nps_value", "demo_age"],
+    cols="demo_gender",
+)
+```
+
+`cell` overrides the choice when you want something specific: `"pct"`,
+`"count"`, `"mean"`, or `"diff"` for each group's distance from `Overall`, which
+is the version to read when you are hunting for what makes a group different.
+
+```{python}
+ez.crosstab_banner(
+    ez.podracing_survey,
+    rows="satis_return",
+    cols="demo_gender",
+    cell="diff",
+)
+```
+
+## Weighting
+
+A banner built on a weighted sample has to be weighted in every cell, not
+corrected afterwards. Set the scheme once and it applies throughout:
+
+```{python}
+ez.set_weights({
+    "variable": "demo_gender",
+    "Male": 0.49,
+    "Female": 0.50,
+    "Non-binary": 0.01,
+})
+
+weighted = ez.crosstab_banner(ez.podracing_survey, rows="satis_return", cols="region")
+
+ez.clear_weights()
+weighted
+```
+
+Weights are computed once per dataset and scheme and then reused, rather than
+re-running the raking loop for every cell. `clear_weights_cache()` empties that
+store if you need to force a recalculation.
+
+## Letting it choose the variables
+
+Called with no `rows` or `cols`, the banner picks them itself: every question
+that looks like a question, crossed by every variable that looks like a split.
+That choice decides the entire table, so in an interactive session it shows the
+choice and waits:
+
+```
+Banner variables chosen automatically: 34 question(s) across 12 grouping variable(s).
+  Questions (34): satis_return, demo_gender, ...
+  Grouping variables (12): demo_gender, region, ...
+  Skipped (11): respondent_id, start_date, nps_com, ...
+  Name `rows` / `cols` yourself, or raise `max_levels` (now 20), to change this.
+Continue? [Y/n]
+```
+
+Identifier columns, free text and anything with more distinct answers than
+`max_levels` are left out. Naming the variables yourself is your own decision
+and is never questioned. The prompt only appears when someone is there to answer
+it, so an unattended script cannot stall on it;
+`ez.ezrsurvey_options(confirm=False)` removes it and `True` forces it.
+
+## Runs long enough to worry about
+
+A full every-variable banner on a wide survey is minutes of work. While it runs
+it says where it is, with an estimate built from the throughput measured so far
+rather than a guess:
+
+```
+Banner table: 34 question(s) across 12 grouping variable(s)
+[7/34] satis_return  (about 2m left)
+```
+
+Progress reporting is on in an interactive session and silent in scripts and
+tests. `ez.ezrsurvey_options(progress=False)` turns it off everywhere.
+
+For a table long enough that losing it would hurt, ask for a checkpoint:
+
+```python
+ez.crosstab_banner(survey, checkpoint=True)           # managed for you
+ez.crosstab_banner(survey, checkpoint="banner.pkl")   # or choose the location
+```
+
+Each question is saved as it finishes, so re-running the identical call after a
+crash carries on from where it stopped. The managed file is named after the
+run's own fingerprint, so a call finds its own interrupted run and never sees one
+belonging to different data or different arguments: a stale file cannot quietly
+corrupt a table. A finished run deletes the managed file; a file you named is
+yours and stays where you put it. `clear_checkpoints()` clears anything left in
+the managed folder by a run that was never repeated.
+
+## Getting it out
+
+A banner is usually delivered as a spreadsheet, and `long=True` gives the tidy
+form to pivot or join instead of the printed one.
+
+```python
+banner = ez.crosstab_banner(survey, rows=..., cols=...)
+
+ez.export_xlsx(banner, sheet_names=["Banner"], path="banner.xlsx")
+ez.save_data(banner, "banner.csv")
+```
+
+A data frame has a single header row, so the banner carries its second one, the
+name of each grouping variable spanning its answers, in
+`banner.attrs["banner_spanners"]`. `flextable=True` returns the table with a real
+two-level header instead, which is what to hand to
+[`report_add_table()`](../reference/report_add_table.qmd) for a slide or a Word
+document:
+
+```{python}
+ez.crosstab_banner(
+    ez.podracing_survey,
+    rows="satis_return",
+    cols=["demo_gender", "region"],
+    flextable=True,
+).head()
+```

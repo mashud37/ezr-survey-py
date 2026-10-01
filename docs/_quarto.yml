@@ -1,0 +1,220 @@
+project:
+  type: website
+  output-dir: _site
+
+website:
+  title: ezrsurvey
+  description: Survey analysis helpers for pandas, ported from the R package ezrsurvey.
+  navbar:
+    left:
+      - href: articles/get-started.qmd
+        text: Get started
+      - href: reference/index.qmd
+        text: Reference
+      - href: datasets.qmd
+        text: Datasets
+      - text: Articles
+        menu:
+          - articles/banner-tables.qmd
+          - articles/countries-and-currency.qmd
+          - articles/powerpoint-decks.qmd
+          - articles/quarto-reports.qmd
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+
+# The reference sections are ezrsurvey/families.py without its data family, which datasets.qmd
+# covers; tests/test_docs.py checks the two agree.
+quartodoc:
+  package: ezrsurvey
+  parser: numpy
+  title: Reference
+  sections:
+    - title: "Import data"
+      desc: "Load and shape raw survey exports."
+      contents:
+        - parse_filename
+        - read_folder
+        - select_prefix
+        - select_suffix
+    - title: "Select columns"
+      desc: "The Python form of the tidyselect helpers R users pass to ezrsurvey."
+      contents:
+        - all_of
+        - any_of
+        - contains
+        - ends_with
+        - everything
+        - is_numeric
+        - starts_with
+        - where
+    - title: "Clean & recode"
+      desc: "Turn messy survey columns into tidy, analysis-ready variables."
+      contents:
+        - add_region
+        - bin_numeric
+        - clean_label
+        - drop_items
+        - ensure_numeric
+        - generation_scheme
+        - na_blank
+        - nps_group
+        - recode_age
+        - recode_generation
+        - recode_likert
+        - recode_region
+        - recode_subregion
+        - split_multi
+    - title: "Summarise"
+      desc: "Percentages, summaries and cross-tabulations in one line."
+      contents:
+        - calc_percentage
+        - calc_percentage_batch
+        - calc_percentage_multi
+        - calc_summary
+        - clear_checkpoints
+        - crosstab
+        - crosstab_banner
+    - title: "Weighting"
+      desc: "Post-stratification / raking applied automatically to the summaries."
+      contents:
+        - clear_weights
+        - clear_weights_cache
+        - get_weights
+        - has_weights
+        - set_weights
+        - weight_vector
+    - title: "Model"
+      desc: "NPS and importance/performance modelling."
+      contents:
+        - calc_importance
+        - calc_nps
+        - ipm_model
+    - title: "Compare"
+      desc: "Differences between events, waves or segments."
+      contents:
+        - compare_values
+        - plot_diff
+    - title: "Diagnostics"
+      desc: "Sampling precision and standard errors."
+      contents:
+        - diagnose
+        - margin_of_error
+        - precision_summary
+        - rse
+        - rse_rating
+        - se_mean
+        - se_prop
+    - title: "Comments"
+      desc: "Select illustrative open-text comments."
+      contents:
+        - sample_comments
+        - sample_comments_diverse
+    - title: "Currency"
+      desc: "Convert monetary amounts between currencies."
+      contents:
+        - add_currency
+        - convert_currency
+        - list_currencies
+    - title: "Plots"
+      desc: "Presentation-ready static charts."
+      contents:
+        - plot_bars
+        - plot_gauges
+        - plot_ipm
+        - plot_nps
+        - plot_nps_gauge
+        - plot_quotes_tree
+        - plot_rating_grid
+        - plot_stacked_rating
+    - title: "Brand"
+      desc: "Adopt an organisation's colours and typefaces for every chart."
+      contents:
+        - brand_info
+        - clear_brand
+        - pal_brand
+        - scale_color_brand
+        - scale_colour_brand
+        - scale_fill_brand
+        - use_brand
+    - title: "Themes & palettes"
+      desc: "Visual identity for every chart."
+      contents:
+        - pal_neutral
+        - pal_nps
+        - pal_rating
+        - pal_sequential_blue
+        - scale_color_rating
+        - scale_colour_rating
+        - scale_fill_nps
+        - scale_fill_rating
+        - theme_ezrsurvey
+        - theme_ezrsurvey_x
+        - theme_ezrsurvey_xy
+        - theme_ezrsurvey_y
+        - theme_transparent
+    - title: "Decisions"
+      desc: "Decision-band annotations."
+      contents:
+        - annotate_bands
+        - bands_nps
+        - bands_nps_score
+        - bands_rating_3
+        - bands_rating_5
+        - mark_value
+        - rescale_bands
+    - title: "Scales"
+      desc: "Tidy axis ceilings and percentage labels."
+      contents:
+        - label_pct
+        - nice_max
+        - scale_y_pct
+    - title: "Save"
+      desc: "Export tables and charts."
+      contents:
+        - export_summary_xlsx
+        - export_xlsx
+        - save_data
+        - save_output
+        - save_plot
+    - title: "Report"
+      desc: "Decks, Word documents and Quarto reports."
+      contents:
+        - example_report
+        - list_report_templates
+        - report_add_plot
+        - report_add_slide
+        - report_add_table
+        - report_add_text
+        - report_deck
+        - report_layouts
+        - report_new
+        - report_save
+        - report_section
+        - report_slide
+        - report_title_slide
+        - scaffold_report
+    - title: "Configuration"
+      desc: "Options, the default dataset, reusable orders and profiles."
+      contents:
+        - apply_order
+        - clear_dataset
+        - dataset_vars
+        - edit_ezrsurvey_profile
+        - ezrsurvey_options
+        - ezrsurvey_profile_paths
+        - get_dataset
+        - get_order
+        - has_dataset
+        - list_orders
+        - load_ezrsurvey_profile
+        - order_for
+        - register_order
+        - register_order_presets
+        - remove_order
+        - reset_ezrsurvey_options
+        - save_ezrsurvey_profile
+        - use_dataset
+        - use_ezrsurvey_profile
