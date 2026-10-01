@@ -1,3 +1,6 @@
+# Working notes, kept out of the repository
+PLAN.md
+
 # Secrets
 secrets.yaml
 config.local.yaml
@@ -43,6 +46,8 @@ _site/
 .quarto/
 docs/reference/
 docs/objects.json
+docs/.gitignore
+*.quarto_ipynb
 
 # Side-by-side chart sheet, regenerated on demand
 parity/charts/

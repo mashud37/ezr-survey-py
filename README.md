@@ -15,14 +15,11 @@ shopping survey), so every example runs out of the box.
 
 ## Installation
 
-The port is not yet on PyPI. From a clone of this repository:
-
 ```sh
-pip install -e ".[all]"
+pip install "ezrsurvey[all]"
 ```
 
-The core needs pandas, numpy, plotnine and PyYAML. Extras unlock the optional features, as R's
-suggested packages do:
+The core needs pandas, numpy, plotnine and PyYAML. Extras add the optional features:
 
 | Extra | Adds | For |
 | --- | --- | --- |
@@ -41,7 +38,7 @@ import ezrsurvey as ez
 
 survey = ez.podracing_survey
 
-# 1. Percentages, no groupby/value_counts/pivot ritual
+# 1. Percentages
 ez.calc_percentage(survey, "demo_gender", sort="desc")
 
 # Drop catch-all answers; the kept ones re-base to ~100%
@@ -96,10 +93,8 @@ tidyselect helpers are exported by the package, and `%>%` becomes `DataFrame.pip
 | `convert_currency(100, from = "EUR")` | `ez.convert_currency(100, from_="EUR")` |
 
 Factors become categorical columns, `NA` becomes `NaN`, messages go to stderr and warnings are
-Python warnings. Results match R's to the last digit, rounding included; a test suite compares
-every covered function against output written by the R package itself. Where the two languages
-cannot agree (random draws, chart pixels, Office table styling) the difference is written down in
-`CONVENTIONS.md`.
+Python warnings. Results match R's, rounding included. Where the two languages cannot agree
+(random draws, chart pixels, Office table styling) `CONVENTIONS.md` lists the difference.
 
 Options and profiles are shared: the port reads and writes the same `.ezrsurvey.yml` files, in
 the same folders, as the R package, so an R user and a Python user on one project share one house
@@ -116,36 +111,24 @@ directory.
 ## Layout
 
 ```
-ezrsurvey/        the package: one module per R source file, plus the bundled data and templates
-tests/            one test file per R test file, and the parity tests against R's own output
-parity/           the R script that writes the golden outputs the parity tests compare against
-data-raw/         the R script that exports the bundled datasets to CSV
-sync/             the index that keeps the port in step with the R package
-docs/             the documentation site: articles, the datasets page and the reference config
-CONVENTIONS.md    how the R package's rules read in Python, and where the port differs
+ezrsurvey/        the package, its bundled datasets and report templates
+tests/            the test suite, including comparisons with the R package's own output
+parity/           the R script that writes that output
+data-raw/         the R script that exports the bundled datasets
+sync/             which R functions changed since they were ported
+docs/             the documentation site
+CONVENTIONS.md    how R's conventions read in Python, and where they differ
 ```
 
-## Documentation site
+## Development
 
-The site is built with quartodoc, which writes a reference page per function grouped as
-`ezrsurvey/families.py` groups them, and Quarto, which renders those pages and the articles:
-
-```sh
-pip install -e ".[all,docs]"
-cd docs
-quartodoc build
-quarto render
-```
-
-The finished site lands in `docs/_site/`. `pytest` runs every article's code, so an article that
-stops working fails the tests before it fails the site.
-
-## Keeping in step with R
-
-`python sync/check.py` compares the R package with the fingerprint recorded when each of its 272
-definitions was ported, and lists anything that changed, appeared or disappeared since, with the
-R package's new `NEWS.md` entries. `Rscript parity/make_fixtures.R` regenerates the golden
-outputs, and `pytest` compares the port against them.
+| Action | Command |
+| --- | --- |
+| Install for development | `pip install -e ".[all,test,docs]"` |
+| Run the tests | `pytest` |
+| List R changes not yet ported | `python sync/check.py` |
+| Rewrite the R reference output | `Rscript parity/make_fixtures.R` |
+| Build the documentation site into `docs/_site/` | `cd docs`, then `quartodoc build` and `quarto render` |
 
 ## License
 

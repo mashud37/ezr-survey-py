@@ -61,17 +61,12 @@ with open(path, encoding="utf-8") as file:
 
 ## Rendering it
 
-Rendering needs the Quarto command-line tool, which is installed on its own
-rather than through pip, and Jupyter, which runs the Python cells:
+Rendering needs [Quarto](https://quarto.org) and Jupyter:
 
 ```bash
 pip install jupyter
 quarto render ezrsurvey-outputs/survey-report.qmd
 ```
-
-If Quarto picks up a Python that has no Jupyter in it, point it at the right one
-with the `QUARTO_PYTHON` environment variable; `quarto check jupyter` shows which
-it found.
 
 The scaffold takes the data file as a parameter, so the same report runs against
 the next wave without being edited:
