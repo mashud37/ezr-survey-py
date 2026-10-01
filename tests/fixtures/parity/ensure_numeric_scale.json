@@ -1,0 +1,12 @@
+{
+  "messages": [],
+  "warnings": [],
+  "kind": "vector",
+  "columns": {
+    "value": {
+      "type": "numeric"
+    }
+  },
+  "names": ["value"],
+  "attrs": []
+}

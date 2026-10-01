@@ -1,0 +1,6 @@
+{
+  "messages": [],
+  "warnings": [],
+  "kind": "error",
+  "error": "These categories of 'demo_gender' have no weight target: Non-binary. Add them to the scheme (or recode them first)."
+}

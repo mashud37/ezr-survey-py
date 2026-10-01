@@ -1,0 +1,6 @@
+{
+  "messages": [],
+  "warnings": [],
+  "kind": "error",
+  "error": "crosstab_banner() needs at least one row; the data has none. A filter that matched no respondents is the usual cause."
+}

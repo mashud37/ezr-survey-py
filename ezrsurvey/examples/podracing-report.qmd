@@ -1,0 +1,250 @@
+---
+title: "Pod-Racing Fan Survey"
+subtitle: "Annual fan study: findings, drivers and recommendations"
+author: "Insights team"
+date: today
+format:
+  html:
+    toc: true
+    toc-location: left
+    theme: cosmo
+    embed-resources: true
+jupyter: python3
+execute:
+  warning: false
+---
+
+```{python}
+#| include: false
+import pandas as pd
+from plotnine import options
+
+import ezrsurvey as ez
+
+options.figure_size = (9, 5)
+options.dpi = 150
+
+survey = ez.podracing_survey
+ez.use_dataset(survey)
+
+# Every figure quoted in the prose is computed here and interpolated inline, so
+# the narrative cannot drift away from the charts when the data changes.
+n_total = len(survey)
+nps = int(ez.calc_nps("nps_value")["nps"].iloc[0])
+groups = ez.nps_group(survey["nps_value"]).astype(float)
+share_promoter = round((groups == 1).mean() * 100)
+share_detractor = round((groups == -1).mean() * 100)
+
+ipm = ez.ipm_model("nps_value", "ratings_")
+threshold = ez.bands_rating_3()["to"].iloc[0]
+priority = ipm[ipm["performance"] < threshold].sort_values("importance", ascending=False)
+strongest = ipm.sort_values("performance", ascending=False).iloc[0]
+top_driver = ipm.sort_values("importance", ascending=False).iloc[0]
+
+regions = ez.calc_nps("nps_value", by="region").sort_values("nps", ascending=False)
+best_region = regions.iloc[0]
+worst_region = regions.iloc[-1]
+
+motivations = ez.calc_percentage_multi("motivations_", id="respondent_id", sort="desc")
+gender = ez.calc_percentage("demo_gender", sort="desc")
+mean_age = ez.calc_summary("demo_age")["mean"].iloc[0]
+
+returning = ez.calc_percentage("satis_return")
+share_return = round(returning.loc[returning["satis_return"].isin(["Likely", "Very likely"]), "pct"].sum())
+
+priority_list = ", ".join(f"{row.feature} ({row.performance:.2f})" for row in priority.itertuples())
+```
+
+A study of `{python} f"{n_total:,}"` pod-racing fans, covering how they rate
+the experience, what drives their willingness to recommend it, and where the
+opportunities sit. Code is shown alongside the output so the analysis can be
+audited and re-run; for a blank scaffold to start your own report from, use
+`ez.scaffold_report()`.
+
+## Executive summary
+
+The fan base recommends pod racing, but narrowly. The Net Promoter Score is
+**`{python} f"{nps:+d}"`** on a base of `{python} f"{n_total:,}"`:
+`{python} share_promoter`% promoters against `{python} share_detractor`%
+detractors, with `{python} share_return`% saying they are likely to return next
+season. This is not a lukewarm crowd so much as a divided one, and the division
+is explainable.
+
+Enthusiasm rests on the spectacle. `{python} round(motivations["pct"].iloc[0])`%
+attend for the `{python} str(motivations["option"].iloc[0])`, and
+`{python} strongest["feature"]` is the best-delivered part of the experience at
+`{python} f"{strongest['performance']:.2f}"` out of 5. That is the asset to
+protect.
+
+What holds the score down is delivery on the basics.
+`{python} len(priority)` of the `{python} len(ipm)` rated features fall below
+the acceptable threshold of `{python} f"{threshold:.1f}"`: `{python} priority_list`.
+The most consequential of these is **`{python} priority["feature"].iloc[0]`**,
+which carries `{python} round(priority["importance"].iloc[0])`% of explained
+importance in the recommendation model while being rated only
+`{python} f"{priority['performance'].iloc[0]:.2f}"`. It is the highest-return
+fix available.
+
+The weakness is also regional rather than universal:
+`{python} best_region["region"]` returns `{python} f"{int(best_region['nps']):+d}"`
+against `{python} worst_region["region"]` at `{python} f"{int(worst_region['nps']):+d}"`,
+a spread of `{python} int(best_region["nps"] - worst_region["nps"])` points that
+no single global programme will close.
+
+## The headline: willingness to recommend
+
+`{python} f"{nps:+d}"` places the fan base in positive territory, but well
+short of the enthusiasm the sport's own marketing assumes.
+
+```{python}
+ez.plot_nps_gauge(nps)
+```
+
+The distribution matters more than the single number. A score of
+`{python} f"{nps:+d}"` could describe a uniformly tepid audience or a split
+one; here it is the latter, with substantial mass at both ends.
+
+```{python}
+ez.plot_nps("nps_value")
+```
+
+Stated return intent corroborates it: `{python} share_return`% likely or very
+likely to come back, with a sizeable undecided middle that is winnable.
+
+```{python}
+ez.calc_percentage("satis_return", sort="desc").pipe(ez.plot_bars)
+```
+
+### Where the score differs
+
+```{python}
+regions
+```
+
+`{python} best_region["region"]` leads on advocacy at
+`{python} f"{int(best_region['nps']):+d}"`; `{python} worst_region["region"]`
+trails at `{python} f"{int(worst_region['nps']):+d}"`. Read the bases in the
+table before acting on any one region: the smaller cells carry margins of error
+wide enough to overlap (see [Methodology](#methodology-and-precision)).
+
+## What drives the score
+
+`ez.ipm_model()` regresses recommendation on the rating block and crosses
+importance against delivered performance. The quadrant to act on is upper
+left: features that matter and are not being delivered.
+
+```{python}
+ez.plot_ipm(ipm)
+```
+
+`{python} top_driver["feature"]` carries the most weight in the model at
+`{python} round(top_driver["importance"])`% of explained importance. Points are
+coloured by the decision band they fall in, so anything sitting in the red zone
+is below the acceptable threshold regardless of how close it looks to the next
+band.
+
+The full ranking:
+
+```{python}
+ipm.sort_values("importance", ascending=False)
+```
+
+Feature-level ratings show the same picture in distribution form, ordered by
+weighted mean:
+
+```{python}
+ez.plot_rating_grid("ratings_")
+```
+
+### Movement against a benchmark
+
+With a previous wave, `ez.compare_values()` and `ez.plot_diff()` show the
+shift. Here the mechanics are illustrated against the scale midpoint, which
+doubles as a read on how far each feature sits from acceptable:
+
+```{python}
+ez.compare_values(
+    current=ipm[["feature", "performance"]],
+    previous=ipm[["feature"]].assign(performance=threshold),
+).pipe(ez.plot_diff)
+```
+
+## Who the audience is
+
+`{python} round(gender["pct"].iloc[0])`% of respondents are
+`{python} str(gender["demo_gender"].iloc[0]).lower()`, average age
+`{python} round(mean_age)`.
+
+```{python}
+ez.calc_percentage("demo_gender", sort="desc").pipe(ez.plot_bars)
+```
+
+Occupation spreads across many long labels, so the chart switches itself to
+horizontal bars:
+
+```{python}
+ez.calc_percentage("demo_job", sort="asc").pipe(ez.plot_bars)
+```
+
+Motivations are a check-all-that-apply block, counted over respondents rather
+than ticks, so the percentages intentionally sum past 100:
+
+```{python}
+motivations.pipe(ez.plot_bars, label="option")
+```
+
+`{python} round(motivations["pct"].iloc[0])`% come for the
+`{python} str(motivations["option"].iloc[0])`, ahead of
+`{python} str(motivations["option"].iloc[1])` at
+`{python} round(motivations["pct"].iloc[1])`%.
+`{python} str(motivations["option"].iloc[-1])` is the minority motive, which
+bears on how heavily that category should front the sponsorship mix.
+
+A crosstab turns any pair of questions into a report-ready table:
+
+```{python}
+ez.crosstab("region", "demo_gender", cell="row_pct")
+```
+
+## In their own words
+
+`ez.sample_comments_diverse()` selects maximally different verbatims. These are
+illustrative of the range of opinion, not a measurement of how common each view
+is.
+
+```{python}
+ez.sample_comments_diverse("nps_com", "show_com", n=8, seed=42).pipe(ez.plot_quotes_tree)
+```
+
+## Weighting the sample
+
+The achieved sample is `{python} round(gender["pct"].iloc[0])`%
+`{python} str(gender["demo_gender"].iloc[0]).lower()`. Where the fan population
+is known to differ, `ez.set_weights()` rakes the sample to the targets and
+every summary helper picks the weights up automatically, reporting `wpct`
+beside the unweighted `pct`:
+
+```{python}
+ez.set_weights({"variable": "demo_gender", "Male": 0.49, "Female": 0.50, "Non-binary": 0.01})
+weighted = ez.calc_percentage("satis_return", sort="desc")
+ez.clear_weights()
+weighted
+```
+
+## Methodology and precision {#methodology-and-precision}
+
+`{python} f"{n_total:,}"` responses. `ez.precision_summary()` reports the margin
+of error each headline figure carries; quote it whenever two percentages are
+compared, because differences smaller than the margin are not differences.
+
+```{python}
+ez.precision_summary("demo_gender", ez.starts_with("ratings_"))
+```
+
+```{python}
+#| include: false
+ez.clear_dataset()
+```
+
+> Rendered with `quarto render podracing-report.qmd`. The matching slide deck
+> is built by `podracing-deck.py` in the same folder.

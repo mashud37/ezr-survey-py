@@ -1,0 +1,22 @@
+{
+  "messages": [],
+  "warnings": [],
+  "kind": "frame",
+  "columns": {
+    "demo_gender": {
+      "type": "character"
+    },
+    "satis_return": {
+      "type": "ordered",
+      "levels": ["Very unlikely", "Unlikely", "Not sure", "Likely", "Very likely"]
+    },
+    "n": {
+      "type": "integer"
+    },
+    "pct": {
+      "type": "numeric"
+    }
+  },
+  "names": ["demo_gender", "satis_return", "n", "pct"],
+  "attrs": {}
+}

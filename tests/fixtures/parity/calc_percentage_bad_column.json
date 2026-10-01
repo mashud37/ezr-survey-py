@@ -1,0 +1,6 @@
+{
+  "messages": [],
+  "warnings": [],
+  "kind": "error",
+  "error": "Column `demo_gendr` not found in the data. Did you mean `demo_gender`?"
+}

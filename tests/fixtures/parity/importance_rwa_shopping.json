@@ -1,0 +1,15 @@
+{
+  "messages": [],
+  "warnings": [],
+  "kind": "frame",
+  "columns": {
+    "feature": {
+      "type": "character"
+    },
+    "importance": {
+      "type": "numeric"
+    }
+  },
+  "names": ["feature", "importance"],
+  "attrs": {}
+}

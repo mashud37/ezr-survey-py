@@ -1,0 +1,82 @@
+---
+title: "{{TITLE}}"
+author: "{{AUTHOR}}"
+date: today
+format:
+  pdf:
+    # PDF styling comes from LaTeX, not a reference-doc; adjust here.
+    documentclass: article
+    geometry: margin=2.5cm
+    toc: true
+    number-sections: true
+jupyter: python3
+execute:
+  echo: false
+  warning: false
+---
+
+```{python}
+#| tags: [parameters]
+data = ""
+```
+
+```{python}
+#| include: false
+import pandas as pd
+from plotnine import options
+
+import ezrsurvey as ez
+
+options.figure_size = (8, 4.5)
+options.dpi = 150
+
+# Render with your own data:  quarto render <file> -P data:my-survey.csv
+# For multi-file exports, replace this with ez.read_folder("data/")
+d = pd.read_csv(data) if data else ez.podracing_survey
+```
+
+# Executive summary
+
+Replace this paragraph with the story of the survey in four sentences: the
+headline number, what drives it, the one surprise, and what you recommend
+doing about it. Write it last -- it is the only section many readers open.
+
+# Who answered
+
+Describe the achieved sample: who it represents, who is missing, and anything
+that skews it.
+
+```{python}
+ez.calc_percentage(d, "demo_gender", sort="desc")
+```
+
+```{python}
+ez.calc_percentage(d, "demo_edu")
+```
+
+# Satisfaction and NPS
+
+State the score and its context (previous wave, sector norm).
+
+```{python}
+ez.plot_nps_gauge(ez.calc_nps(d, "nps_value")["nps"].iloc[0])
+```
+
+```{python}
+ez.calc_nps(d, "nps_value", by="region")
+```
+
+# What drives satisfaction
+
+Read the matrix by quadrant: top-left (important, delivered poorly) is the
+to-do list; top-right (important, delivered well) is what to protect.
+
+```{python}
+ez.ipm_model(d, "nps_value", "ratings_").pipe(ez.plot_ipm)
+```
+
+# Methodology and precision
+
+```{python}
+ez.precision_summary(d, "demo_gender", ez.starts_with("ratings_"))
+```

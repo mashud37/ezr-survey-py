@@ -1,0 +1,15 @@
+{
+  "messages": [],
+  "warnings": [],
+  "kind": "frame",
+  "columns": {
+    "entropy": {
+      "type": "numeric"
+    },
+    "tfidf": {
+      "type": "numeric"
+    }
+  },
+  "names": ["entropy", "tfidf"],
+  "attrs": {}
+}

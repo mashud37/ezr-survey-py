@@ -1,0 +1,393 @@
+{
+  "messages": ["crosstab_banner: skipped 3 identifier / free-text / high-cardinality column(s): respondent_id, nps_com, show_com. Raise max_levels or name them in rows/cols to include them."],
+  "warnings": [],
+  "kind": "frame",
+  "columns": {
+    "variable": {
+      "type": "character"
+    },
+    "item": {
+      "type": "character"
+    },
+    "Overall": {
+      "type": "numeric"
+    },
+    "email": {
+      "type": "numeric"
+    },
+    "in_app": {
+      "type": "numeric"
+    },
+    "panel": {
+      "type": "numeric"
+    },
+    "socials": {
+      "type": "numeric"
+    },
+    "Female": {
+      "type": "numeric"
+    },
+    "Male": {
+      "type": "numeric"
+    },
+    "Non-binary": {
+      "type": "numeric"
+    },
+    "Bachelor or equivalent": {
+      "type": "numeric"
+    },
+    "Doctoral or equivalent": {
+      "type": "numeric"
+    },
+    "Lower secondary": {
+      "type": "numeric"
+    },
+    "Master or equivalent": {
+      "type": "numeric"
+    },
+    "Primary or less": {
+      "type": "numeric"
+    },
+    "Short-cycle tertiary": {
+      "type": "numeric"
+    },
+    "Upper secondary": {
+      "type": "numeric"
+    },
+    "Australia": {
+      "type": "numeric"
+    },
+    "Brazil": {
+      "type": "numeric"
+    },
+    "Canada": {
+      "type": "numeric"
+    },
+    "France": {
+      "type": "numeric"
+    },
+    "Germany": {
+      "type": "numeric"
+    },
+    "Japan": {
+      "type": "numeric"
+    },
+    "Mexico": {
+      "type": "numeric"
+    },
+    "Sweden": {
+      "type": "numeric"
+    },
+    "United Kingdom": {
+      "type": "numeric"
+    },
+    "United States": {
+      "type": "numeric"
+    },
+    "Asia": {
+      "type": "numeric"
+    },
+    "Europe": {
+      "type": "numeric"
+    },
+    "Latin America": {
+      "type": "numeric"
+    },
+    "North America": {
+      "type": "numeric"
+    },
+    "Oceania": {
+      "type": "numeric"
+    },
+    "Employed full-time": {
+      "type": "numeric"
+    },
+    "Employed part-time": {
+      "type": "numeric"
+    },
+    "Not in labour force": {
+      "type": "numeric"
+    },
+    "Student": {
+      "type": "numeric"
+    },
+    "Unemployed": {
+      "type": "numeric"
+    },
+    "Arts and entertainment": {
+      "type": "numeric"
+    },
+    "Education": {
+      "type": "numeric"
+    },
+    "Financial and insurance": {
+      "type": "numeric"
+    },
+    "Human health and social work": {
+      "type": "numeric"
+    },
+    "Information and communication": {
+      "type": "numeric"
+    },
+    "Manufacturing": {
+      "type": "numeric"
+    },
+    "Other services": {
+      "type": "numeric"
+    },
+    "Public administration": {
+      "type": "numeric"
+    },
+    "Wholesale and retail trade": {
+      "type": "numeric"
+    },
+    "Andobi Mountain Run": {
+      "type": "numeric"
+    },
+    "Boonta Eve Classic": {
+      "type": "numeric"
+    },
+    "Mos Espa Circuit": {
+      "type": "numeric"
+    },
+    "Phoebos Memorial Run": {
+      "type": "numeric"
+    },
+    "Vinta Harvest Classic": {
+      "type": "numeric"
+    },
+    "Anakin Skywalker": {
+      "type": "numeric"
+    },
+    "Ben Quadinaros": {
+      "type": "numeric"
+    },
+    "Boles Roor": {
+      "type": "numeric"
+    },
+    "Dud Bolt": {
+      "type": "numeric"
+    },
+    "Gasgano": {
+      "type": "numeric"
+    },
+    "Mawhonic": {
+      "type": "numeric"
+    },
+    "Ody Mandrell": {
+      "type": "numeric"
+    },
+    "Ratts Tyerell": {
+      "type": "numeric"
+    },
+    "Sebulba": {
+      "type": "numeric"
+    },
+    "Teemto Pagalies": {
+      "type": "numeric"
+    },
+    "10": {
+      "type": "numeric"
+    },
+    "2": {
+      "type": "numeric"
+    },
+    "3": {
+      "type": "numeric"
+    },
+    "4": {
+      "type": "numeric"
+    },
+    "5": {
+      "type": "numeric"
+    },
+    "6": {
+      "type": "numeric"
+    },
+    "7": {
+      "type": "numeric"
+    },
+    "8": {
+      "type": "numeric"
+    },
+    "9": {
+      "type": "numeric"
+    },
+    "Likely": {
+      "type": "numeric"
+    },
+    "Not sure": {
+      "type": "numeric"
+    },
+    "Unlikely": {
+      "type": "numeric"
+    },
+    "Very likely": {
+      "type": "numeric"
+    },
+    "Very unlikely": {
+      "type": "numeric"
+    },
+    "Bad": {
+      "type": "numeric"
+    },
+    "Good": {
+      "type": "numeric"
+    },
+    "Ok": {
+      "type": "numeric"
+    },
+    "Very bad": {
+      "type": "numeric"
+    },
+    "Very good": {
+      "type": "numeric"
+    },
+    "Bad 1": {
+      "type": "numeric"
+    },
+    "Good 1": {
+      "type": "numeric"
+    },
+    "Ok 1": {
+      "type": "numeric"
+    },
+    "Very bad 1": {
+      "type": "numeric"
+    },
+    "Very good 1": {
+      "type": "numeric"
+    },
+    "Bad 2": {
+      "type": "numeric"
+    },
+    "Good 2": {
+      "type": "numeric"
+    },
+    "Ok 2": {
+      "type": "numeric"
+    },
+    "Very bad 2": {
+      "type": "numeric"
+    },
+    "Very good 2": {
+      "type": "numeric"
+    },
+    "Bad 3": {
+      "type": "numeric"
+    },
+    "Good 3": {
+      "type": "numeric"
+    },
+    "Ok 3": {
+      "type": "numeric"
+    },
+    "Very bad 3": {
+      "type": "numeric"
+    },
+    "Very good 3": {
+      "type": "numeric"
+    },
+    "Bad 4": {
+      "type": "numeric"
+    },
+    "Good 4": {
+      "type": "numeric"
+    },
+    "Ok 4": {
+      "type": "numeric"
+    },
+    "Very bad 4": {
+      "type": "numeric"
+    },
+    "Very good 4": {
+      "type": "numeric"
+    },
+    "Bad 5": {
+      "type": "numeric"
+    },
+    "Good 5": {
+      "type": "numeric"
+    },
+    "Ok 5": {
+      "type": "numeric"
+    },
+    "Very bad 5": {
+      "type": "numeric"
+    },
+    "Very good 5": {
+      "type": "numeric"
+    },
+    "Don't know this brand": {
+      "type": "numeric"
+    },
+    "Not a sponsor": {
+      "type": "numeric"
+    },
+    "Sponsor": {
+      "type": "numeric"
+    },
+    "Likeable": {
+      "type": "numeric"
+    },
+    "Unlikeable": {
+      "type": "numeric"
+    },
+    "Very likeable": {
+      "type": "numeric"
+    },
+    "Very unlikeable": {
+      "type": "numeric"
+    },
+    "Don't know this brand 1": {
+      "type": "numeric"
+    },
+    "Not a sponsor 1": {
+      "type": "numeric"
+    },
+    "Sponsor 1": {
+      "type": "numeric"
+    },
+    "Likeable 1": {
+      "type": "numeric"
+    },
+    "Unlikeable 1": {
+      "type": "numeric"
+    },
+    "Very likeable 1": {
+      "type": "numeric"
+    },
+    "Very unlikeable 1": {
+      "type": "numeric"
+    },
+    "Don't know this brand 2": {
+      "type": "numeric"
+    },
+    "Not a sponsor 2": {
+      "type": "numeric"
+    },
+    "Sponsor 2": {
+      "type": "numeric"
+    },
+    "Likeable 2": {
+      "type": "numeric"
+    },
+    "Unlikeable 2": {
+      "type": "numeric"
+    },
+    "Very likeable 2": {
+      "type": "numeric"
+    },
+    "Very unlikeable 2": {
+      "type": "numeric"
+    }
+  },
+  "names": ["variable", "item", "Overall", "email", "in_app", "panel", "socials", "Female", "Male", "Non-binary", "Bachelor or equivalent", "Doctoral or equivalent", "Lower secondary", "Master or equivalent", "Primary or less", "Short-cycle tertiary", "Upper secondary", "Australia", "Brazil", "Canada", "France", "Germany", "Japan", "Mexico", "Sweden", "United Kingdom", "United States", "Asia", "Europe", "Latin America", "North America", "Oceania", "Employed full-time", "Employed part-time", "Not in labour force", "Student", "Unemployed", "Arts and entertainment", "Education", "Financial and insurance", "Human health and social work", "Information and communication", "Manufacturing", "Other services", "Public administration", "Wholesale and retail trade", "Andobi Mountain Run", "Boonta Eve Classic", "Mos Espa Circuit", "Phoebos Memorial Run", "Vinta Harvest Classic", "Anakin Skywalker", "Ben Quadinaros", "Boles Roor", "Dud Bolt", "Gasgano", "Mawhonic", "Ody Mandrell", "Ratts Tyerell", "Sebulba", "Teemto Pagalies", "10", "2", "3", "4", "5", "6", "7", "8", "9", "Likely", "Not sure", "Unlikely", "Very likely", "Very unlikely", "Bad", "Good", "Ok", "Very bad", "Very good", "Bad 1", "Good 1", "Ok 1", "Very bad 1", "Very good 1", "Bad 2", "Good 2", "Ok 2", "Very bad 2", "Very good 2", "Bad 3", "Good 3", "Ok 3", "Very bad 3", "Very good 3", "Bad 4", "Good 4", "Ok 4", "Very bad 4", "Very good 4", "Bad 5", "Good 5", "Ok 5", "Very bad 5", "Very good 5", "Don't know this brand", "Not a sponsor", "Sponsor", "Likeable", "Unlikeable", "Very likeable", "Very unlikeable", "Don't know this brand 1", "Not a sponsor 1", "Sponsor 1", "Likeable 1", "Unlikeable 1", "Very likeable 1", "Very unlikeable 1", "Don't know this brand 2", "Not a sponsor 2", "Sponsor 2", "Likeable 2", "Unlikeable 2", "Very likeable 2", "Very unlikeable 2"],
+  "attrs": {
+    "banner_spanners": {
+      "col": ["Overall", "email", "in_app", "panel", "socials", "Female", "Male", "Non-binary", "Bachelor or equivalent", "Doctoral or equivalent", "Lower secondary", "Master or equivalent", "Primary or less", "Short-cycle tertiary", "Upper secondary", "Australia", "Brazil", "Canada", "France", "Germany", "Japan", "Mexico", "Sweden", "United Kingdom", "United States", "Asia", "Europe", "Latin America", "North America", "Oceania", "Employed full-time", "Employed part-time", "Not in labour force", "Student", "Unemployed", "Arts and entertainment", "Education", "Financial and insurance", "Human health and social work", "Information and communication", "Manufacturing", "Other services", "Public administration", "Wholesale and retail trade", "Andobi Mountain Run", "Boonta Eve Classic", "Mos Espa Circuit", "Phoebos Memorial Run", "Vinta Harvest Classic", "Anakin Skywalker", "Ben Quadinaros", "Boles Roor", "Dud Bolt", "Gasgano", "Mawhonic", "Ody Mandrell", "Ratts Tyerell", "Sebulba", "Teemto Pagalies", "10", "2", "3", "4", "5", "6", "7", "8", "9", "Likely", "Not sure", "Unlikely", "Very likely", "Very unlikely", "Bad", "Good", "Ok", "Very bad", "Very good", "Bad 1", "Good 1", "Ok 1", "Very bad 1", "Very good 1", "Bad 2", "Good 2", "Ok 2", "Very bad 2", "Very good 2", "Bad 3", "Good 3", "Ok 3", "Very bad 3", "Very good 3", "Bad 4", "Good 4", "Ok 4", "Very bad 4", "Very good 4", "Bad 5", "Good 5", "Ok 5", "Very bad 5", "Very good 5", "Don't know this brand", "Not a sponsor", "Sponsor", "Likeable", "Unlikeable", "Very likeable", "Very unlikeable", "Don't know this brand 1", "Not a sponsor 1", "Sponsor 1", "Likeable 1", "Unlikeable 1", "Very likeable 1", "Very unlikeable 1", "Don't know this brand 2", "Not a sponsor 2", "Sponsor 2", "Likeable 2", "Unlikeable 2", "Very likeable 2", "Very unlikeable 2"],
+      "group": ["Overall", "collector", "collector", "collector", "collector", "demo_gender", "demo_gender", "demo_gender", "demo_edu", "demo_edu", "demo_edu", "demo_edu", "demo_edu", "demo_edu", "demo_edu", "demo_country", "demo_country", "demo_country", "demo_country", "demo_country", "demo_country", "demo_country", "demo_country", "demo_country", "demo_country", "region", "region", "region", "region", "region", "demo_job", "demo_job", "demo_job", "demo_job", "demo_job", "demo_sector", "demo_sector", "demo_sector", "demo_sector", "demo_sector", "demo_sector", "demo_sector", "demo_sector", "demo_sector", "race_attended", "race_attended", "race_attended", "race_attended", "race_attended", "fav_driver", "fav_driver", "fav_driver", "fav_driver", "fav_driver", "fav_driver", "fav_driver", "fav_driver", "fav_driver", "fav_driver", "nps_value", "nps_value", "nps_value", "nps_value", "nps_value", "nps_value", "nps_value", "nps_value", "nps_value", "satis_return", "satis_return", "satis_return", "satis_return", "satis_return", "ratings_atmosphere", "ratings_atmosphere", "ratings_atmosphere", "ratings_atmosphere", "ratings_atmosphere", "ratings_commentary", "ratings_commentary", "ratings_commentary", "ratings_commentary", "ratings_commentary", "ratings_safety", "ratings_safety", "ratings_safety", "ratings_safety", "ratings_safety", "ratings_speed", "ratings_speed", "ratings_speed", "ratings_speed", "ratings_speed", "ratings_value", "ratings_value", "ratings_value", "ratings_value", "ratings_value", "ratings_venue", "ratings_venue", "ratings_venue", "ratings_venue", "ratings_venue", "partner_recall_PodTech", "partner_recall_PodTech", "partner_recall_PodTech", "partner_likeability_PodTech", "partner_likeability_PodTech", "partner_likeability_PodTech", "partner_likeability_PodTech", "partner_recall_BanthaBrew", "partner_recall_BanthaBrew", "partner_recall_BanthaBrew", "partner_likeability_BanthaBrew", "partner_likeability_BanthaBrew", "partner_likeability_BanthaBrew", "partner_likeability_BanthaBrew", "partner_recall_JawaJuice", "partner_recall_JawaJuice", "partner_recall_JawaJuice", "partner_likeability_JawaJuice", "partner_likeability_JawaJuice", "partner_likeability_JawaJuice", "partner_likeability_JawaJuice"],
+      "label": ["Overall", "email", "in_app", "panel", "socials", "Female", "Male", "Non-binary", "Bachelor or equivalent", "Doctoral or equivalent", "Lower secondary", "Master or equivalent", "Primary or less", "Short-cycle tertiary", "Upper secondary", "Australia", "Brazil", "Canada", "France", "Germany", "Japan", "Mexico", "Sweden", "United Kingdom", "United States", "Asia", "Europe", "Latin America", "North America", "Oceania", "Employed full-time", "Employed part-time", "Not in labour force", "Student", "Unemployed", "Arts and entertainment", "Education", "Financial and insurance", "Human health and social work", "Information and communication", "Manufacturing", "Other services", "Public administration", "Wholesale and retail trade", "Andobi Mountain Run", "Boonta Eve Classic", "Mos Espa Circuit", "Phoebos Memorial Run", "Vinta Harvest Classic", "Anakin Skywalker", "Ben Quadinaros", "Boles Roor", "Dud Bolt", "Gasgano", "Mawhonic", "Ody Mandrell", "Ratts Tyerell", "Sebulba", "Teemto Pagalies", "10", "2", "3", "4", "5", "6", "7", "8", "9", "Likely", "Not sure", "Unlikely", "Very likely", "Very unlikely", "Bad", "Good", "Ok", "Very bad", "Very good", "Bad", "Good", "Ok", "Very bad", "Very good", "Bad", "Good", "Ok", "Very bad", "Very good", "Bad", "Good", "Ok", "Very bad", "Very good", "Bad", "Good", "Ok", "Very bad", "Very good", "Bad", "Good", "Ok", "Very bad", "Very good", "Don't know this brand", "Not a sponsor", "Sponsor", "Likeable", "Unlikeable", "Very likeable", "Very unlikeable", "Don't know this brand", "Not a sponsor", "Sponsor", "Likeable", "Unlikeable", "Very likeable", "Very unlikeable", "Don't know this brand", "Not a sponsor", "Sponsor", "Likeable", "Unlikeable", "Very likeable", "Very unlikeable"]
+    }
+  }
+}

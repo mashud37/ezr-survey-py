@@ -1,0 +1,42 @@
+{
+  "messages": [],
+  "warnings": [],
+  "fields": {
+    "n": 1000,
+    "overall_rse": 4.185,
+    "rating": "high precision",
+    "bullets": ["Based on 1,000 total responses (per-question base of 776 to 1,000).", "Point ratings carry a sampling margin of about +/-0.40 points (up to +/-0.69) at 95% confidence.", "Percentages carry a sampling margin of about +/-3.0 percentage points (worst case +/-3.1 at a 50/50 split).", "Overall relative standard error of about 4.2% -- high precision."]
+  },
+  "kind": "precision",
+  "columns": {
+    "variable": {
+      "type": "character"
+    },
+    "type": {
+      "type": "character"
+    },
+    "unit": {
+      "type": "character"
+    },
+    "n": {
+      "type": "integer"
+    },
+    "estimate": {
+      "type": "numeric"
+    },
+    "se": {
+      "type": "numeric"
+    },
+    "rse": {
+      "type": "numeric"
+    },
+    "moe": {
+      "type": "numeric"
+    },
+    "precision": {
+      "type": "character"
+    }
+  },
+  "names": ["variable", "type", "unit", "n", "estimate", "se", "rse", "moe", "precision"],
+  "attrs": {}
+}

@@ -1,0 +1,33 @@
+{
+  "messages": [],
+  "warnings": [],
+  "kind": "frame",
+  "columns": {
+    "variable": {
+      "type": "character"
+    },
+    "item": {
+      "type": "character"
+    },
+    "Overall": {
+      "type": "numeric"
+    },
+    "Female": {
+      "type": "numeric"
+    },
+    "Male": {
+      "type": "numeric"
+    },
+    "Non-binary": {
+      "type": "numeric"
+    }
+  },
+  "names": ["variable", "item", "Overall", "Female", "Male", "Non-binary"],
+  "attrs": {
+    "banner_spanners": {
+      "col": ["Overall", "Female", "Male", "Non-binary"],
+      "group": ["Overall", "demo_gender", "demo_gender", "demo_gender"],
+      "label": ["Overall", "Female", "Male", "Non-binary"]
+    }
+  }
+}

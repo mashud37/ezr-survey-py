@@ -1,0 +1,27 @@
+{
+  "messages": [],
+  "warnings": [],
+  "kind": "frame",
+  "columns": {
+    "demo_gender": {
+      "type": "character"
+    },
+    "Asia": {
+      "type": "numeric"
+    },
+    "Europe": {
+      "type": "numeric"
+    },
+    "Latin America": {
+      "type": "numeric"
+    },
+    "North America": {
+      "type": "numeric"
+    },
+    "Oceania": {
+      "type": "numeric"
+    }
+  },
+  "names": ["demo_gender", "Asia", "Europe", "Latin America", "North America", "Oceania"],
+  "attrs": {}
+}

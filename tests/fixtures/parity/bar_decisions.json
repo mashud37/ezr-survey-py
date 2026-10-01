@@ -1,0 +1,24 @@
+{
+  "messages": [],
+  "warnings": [],
+  "kind": "frame",
+  "columns": {
+    "levels": {
+      "type": "character"
+    },
+    "width": {
+      "type": "numeric"
+    },
+    "ymax": {
+      "type": "numeric"
+    },
+    "flipped": {
+      "type": "logical"
+    },
+    "text_size": {
+      "type": "numeric"
+    }
+  },
+  "names": ["levels", "width", "ymax", "flipped", "text_size"],
+  "attrs": {}
+}

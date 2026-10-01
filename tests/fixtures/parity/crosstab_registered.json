@@ -1,0 +1,34 @@
+{
+  "messages": [],
+  "warnings": [],
+  "kind": "frame",
+  "columns": {
+    "satis_return": {
+      "type": "factor",
+      "levels": ["Very unlikely", "Unlikely", "Not sure", "Likely", "Very likely"]
+    },
+    "Primary or less": {
+      "type": "numeric"
+    },
+    "Lower secondary": {
+      "type": "numeric"
+    },
+    "Upper secondary": {
+      "type": "numeric"
+    },
+    "Short-cycle tertiary": {
+      "type": "numeric"
+    },
+    "Bachelor or equivalent": {
+      "type": "numeric"
+    },
+    "Master or equivalent": {
+      "type": "numeric"
+    },
+    "Doctoral or equivalent": {
+      "type": "numeric"
+    }
+  },
+  "names": ["satis_return", "Primary or less", "Lower secondary", "Upper secondary", "Short-cycle tertiary", "Bachelor or equivalent", "Master or equivalent", "Doctoral or equivalent"],
+  "attrs": {}
+}

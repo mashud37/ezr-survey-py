@@ -1,0 +1,24 @@
+{
+  "messages": [],
+  "warnings": [],
+  "kind": "frame",
+  "columns": {
+    "file": {
+      "type": "character"
+    },
+    "survey": {
+      "type": "character"
+    },
+    "wave": {
+      "type": "character"
+    },
+    "locale": {
+      "type": "character"
+    },
+    "year": {
+      "type": "character"
+    }
+  },
+  "names": ["file", "survey", "wave", "locale", "year"],
+  "attrs": {}
+}

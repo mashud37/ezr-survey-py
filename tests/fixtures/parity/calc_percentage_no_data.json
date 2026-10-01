@@ -1,0 +1,6 @@
+{
+  "messages": [],
+  "warnings": [],
+  "kind": "error",
+  "error": "No `data` supplied and no default dataset set. Pass `data`, pipe it in, or call use_dataset() first."
+}

@@ -1,0 +1,19 @@
+{
+  "messages": [],
+  "warnings": [],
+  "kind": "frame",
+  "columns": {
+    "satis_return": {
+      "type": "ordered",
+      "levels": ["Very unlikely", "Unlikely", "Not sure", "Likely", "Very likely"]
+    },
+    "n": {
+      "type": "integer"
+    },
+    "pct": {
+      "type": "numeric"
+    }
+  },
+  "names": ["satis_return", "n", "pct"],
+  "attrs": {}
+}

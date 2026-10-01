@@ -1,0 +1,12 @@
+{
+  "messages": ["bin_numeric: 3 value(s) fell outside the breaks and became NA (range 10 to 60). Widen `breaks`, e.g. with -Inf / Inf at the ends."],
+  "warnings": [],
+  "kind": "vector",
+  "columns": {
+    "value": {
+      "type": "character"
+    }
+  },
+  "names": ["value"],
+  "attrs": []
+}

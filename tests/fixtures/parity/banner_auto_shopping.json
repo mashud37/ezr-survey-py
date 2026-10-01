@@ -1,0 +1,195 @@
+{
+  "messages": ["crosstab_banner: skipped 3 identifier / free-text / high-cardinality column(s): patron_id, occupation, comment. Raise max_levels or name them in rows/cols to include them."],
+  "warnings": [],
+  "kind": "frame",
+  "columns": {
+    "variable": {
+      "type": "character"
+    },
+    "item": {
+      "type": "character"
+    },
+    "Overall": {
+      "type": "numeric"
+    },
+    "Female": {
+      "type": "numeric"
+    },
+    "Male": {
+      "type": "numeric"
+    },
+    "Australia": {
+      "type": "numeric"
+    },
+    "Canada": {
+      "type": "numeric"
+    },
+    "India": {
+      "type": "numeric"
+    },
+    "Ireland": {
+      "type": "numeric"
+    },
+    "United Kingdom": {
+      "type": "numeric"
+    },
+    "United States": {
+      "type": "numeric"
+    },
+    "Asia": {
+      "type": "numeric"
+    },
+    "Europe": {
+      "type": "numeric"
+    },
+    "North America": {
+      "type": "numeric"
+    },
+    "Oceania": {
+      "type": "numeric"
+    },
+    "Lower middle class": {
+      "type": "numeric"
+    },
+    "Poor": {
+      "type": "numeric"
+    },
+    "Skilled working class": {
+      "type": "numeric"
+    },
+    "Upper class": {
+      "type": "numeric"
+    },
+    "Upper middle class": {
+      "type": "numeric"
+    },
+    "Working class": {
+      "type": "numeric"
+    },
+    "Barter": {
+      "type": "numeric"
+    },
+    "Cash": {
+      "type": "numeric"
+    },
+    "On account": {
+      "type": "numeric"
+    },
+    "Bicycle": {
+      "type": "numeric"
+    },
+    "Horse and cart": {
+      "type": "numeric"
+    },
+    "Motor-car": {
+      "type": "numeric"
+    },
+    "Omnibus": {
+      "type": "numeric"
+    },
+    "On foot": {
+      "type": "numeric"
+    },
+    "Railway": {
+      "type": "numeric"
+    },
+    "Always": {
+      "type": "numeric"
+    },
+    "Never": {
+      "type": "numeric"
+    },
+    "Often": {
+      "type": "numeric"
+    },
+    "Rarely": {
+      "type": "numeric"
+    },
+    "Sometimes": {
+      "type": "numeric"
+    },
+    "Bad": {
+      "type": "numeric"
+    },
+    "Good": {
+      "type": "numeric"
+    },
+    "Ok": {
+      "type": "numeric"
+    },
+    "Very bad": {
+      "type": "numeric"
+    },
+    "Very good": {
+      "type": "numeric"
+    },
+    "Bad 1": {
+      "type": "numeric"
+    },
+    "Good 1": {
+      "type": "numeric"
+    },
+    "Ok 1": {
+      "type": "numeric"
+    },
+    "Very bad 1": {
+      "type": "numeric"
+    },
+    "Very good 1": {
+      "type": "numeric"
+    },
+    "Bad 2": {
+      "type": "numeric"
+    },
+    "Good 2": {
+      "type": "numeric"
+    },
+    "Ok 2": {
+      "type": "numeric"
+    },
+    "Very bad 2": {
+      "type": "numeric"
+    },
+    "Very good 2": {
+      "type": "numeric"
+    },
+    "Bad 3": {
+      "type": "numeric"
+    },
+    "Good 3": {
+      "type": "numeric"
+    },
+    "Ok 3": {
+      "type": "numeric"
+    },
+    "Very bad 3": {
+      "type": "numeric"
+    },
+    "Very good 3": {
+      "type": "numeric"
+    },
+    "Bad 4": {
+      "type": "numeric"
+    },
+    "Good 4": {
+      "type": "numeric"
+    },
+    "Ok 4": {
+      "type": "numeric"
+    },
+    "Very bad 4": {
+      "type": "numeric"
+    },
+    "Very good 4": {
+      "type": "numeric"
+    }
+  },
+  "names": ["variable", "item", "Overall", "Female", "Male", "Australia", "Canada", "India", "Ireland", "United Kingdom", "United States", "Asia", "Europe", "North America", "Oceania", "Lower middle class", "Poor", "Skilled working class", "Upper class", "Upper middle class", "Working class", "Barter", "Cash", "On account", "Bicycle", "Horse and cart", "Motor-car", "Omnibus", "On foot", "Railway", "Always", "Never", "Often", "Rarely", "Sometimes", "Bad", "Good", "Ok", "Very bad", "Very good", "Bad 1", "Good 1", "Ok 1", "Very bad 1", "Very good 1", "Bad 2", "Good 2", "Ok 2", "Very bad 2", "Very good 2", "Bad 3", "Good 3", "Ok 3", "Very bad 3", "Very good 3", "Bad 4", "Good 4", "Ok 4", "Very bad 4", "Very good 4"],
+  "attrs": {
+    "banner_spanners": {
+      "col": ["Overall", "Female", "Male", "Australia", "Canada", "India", "Ireland", "United Kingdom", "United States", "Asia", "Europe", "North America", "Oceania", "Lower middle class", "Poor", "Skilled working class", "Upper class", "Upper middle class", "Working class", "Barter", "Cash", "On account", "Bicycle", "Horse and cart", "Motor-car", "Omnibus", "On foot", "Railway", "Always", "Never", "Often", "Rarely", "Sometimes", "Bad", "Good", "Ok", "Very bad", "Very good", "Bad 1", "Good 1", "Ok 1", "Very bad 1", "Very good 1", "Bad 2", "Good 2", "Ok 2", "Very bad 2", "Very good 2", "Bad 3", "Good 3", "Ok 3", "Very bad 3", "Very good 3", "Bad 4", "Good 4", "Ok 4", "Very bad 4", "Very good 4"],
+      "group": ["Overall", "demo_gender", "demo_gender", "demo_country", "demo_country", "demo_country", "demo_country", "demo_country", "demo_country", "region", "region", "region", "region", "social_class", "social_class", "social_class", "social_class", "social_class", "social_class", "payment", "payment", "payment", "transport", "transport", "transport", "transport", "transport", "transport", "visit_frequency", "visit_frequency", "visit_frequency", "visit_frequency", "visit_frequency", "ratings_goods", "ratings_goods", "ratings_goods", "ratings_goods", "ratings_goods", "ratings_service", "ratings_service", "ratings_service", "ratings_service", "ratings_service", "ratings_credit", "ratings_credit", "ratings_credit", "ratings_credit", "ratings_credit", "ratings_delivery", "ratings_delivery", "ratings_delivery", "ratings_delivery", "ratings_delivery", "ratings_value", "ratings_value", "ratings_value", "ratings_value", "ratings_value"],
+      "label": ["Overall", "Female", "Male", "Australia", "Canada", "India", "Ireland", "United Kingdom", "United States", "Asia", "Europe", "North America", "Oceania", "Lower middle class", "Poor", "Skilled working class", "Upper class", "Upper middle class", "Working class", "Barter", "Cash", "On account", "Bicycle", "Horse and cart", "Motor-car", "Omnibus", "On foot", "Railway", "Always", "Never", "Often", "Rarely", "Sometimes", "Bad", "Good", "Ok", "Very bad", "Very good", "Bad", "Good", "Ok", "Very bad", "Very good", "Bad", "Good", "Ok", "Very bad", "Very good", "Bad", "Good", "Ok", "Very bad", "Very good", "Bad", "Good", "Ok", "Very bad", "Very good"]
+    }
+  }
+}

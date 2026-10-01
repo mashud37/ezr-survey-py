@@ -1,0 +1,90 @@
+---
+title: "{{TITLE}}"
+author: "{{AUTHOR}}"
+date: today
+format:
+  pptx:
+{{REFERENCE_DOC}}
+jupyter: python3
+execute:
+  echo: false
+  warning: false
+---
+
+```{python}
+#| tags: [parameters]
+data = ""
+```
+
+```{python}
+#| include: false
+import pandas as pd
+from plotnine import options
+
+import ezrsurvey as ez
+
+options.figure_size = (12, 4.9)
+options.dpi = 150
+
+# Render with your own data:  quarto render <file> -P data:my-survey.csv
+# For multi-file exports, replace this with ez.read_folder("data/")
+d = pd.read_csv(data) if data else ez.podracing_survey
+```
+
+## Executive summary
+
+- Replace these with the three things the room must remember
+- One number each, with what it means for the business
+- Write them last, once the rest of the deck is settled
+
+::: {.notes}
+One message per slide. Replace this deck's placeholder titles with takeaway
+titles ("X drives satisfaction", not "Results"): the title row is the only
+line most of the room reads.
+:::
+
+# The headline
+
+## Net Promoter Score
+
+```{python}
+ez.plot_nps_gauge(ez.calc_nps(d, "nps_value")["nps"].iloc[0])
+```
+
+## What drives the score
+
+```{python}
+ez.ipm_model(d, "nps_value", "ratings_").pipe(ez.plot_ipm)
+```
+
+# Who answered
+
+## Gender
+
+```{python}
+ez.calc_percentage(d, "demo_gender", sort="desc").pipe(ez.plot_bars)
+```
+
+## Education
+
+```{python}
+ez.calc_percentage(d, "demo_edu", sort="asc").pipe(ez.plot_bars, flip=True)
+```
+
+## Why they attend
+
+```{python}
+ez.calc_percentage_multi(d, "motivations_", id="respondent_id", sort="asc").pipe(
+    ez.plot_bars, label="option", flip=True
+)
+```
+
+# Appendix
+
+## How to read this report
+
+```{python}
+#| output: asis
+precision = ez.precision_summary(d, "demo_gender", ez.starts_with("ratings_"))
+print("\n".join("- " + bullet for bullet in precision["bullets"]))
+```

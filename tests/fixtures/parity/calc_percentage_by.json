@@ -1,0 +1,21 @@
+{
+  "messages": [],
+  "warnings": [],
+  "kind": "frame",
+  "columns": {
+    "region": {
+      "type": "character"
+    },
+    "satis_return": {
+      "type": "character"
+    },
+    "n": {
+      "type": "integer"
+    },
+    "pct": {
+      "type": "numeric"
+    }
+  },
+  "names": ["region", "satis_return", "n", "pct"],
+  "attrs": {}
+}

@@ -1,0 +1,21 @@
+{
+  "messages": [],
+  "warnings": [],
+  "kind": "frame",
+  "columns": {
+    "variable": {
+      "type": "character"
+    },
+    "answer": {
+      "type": "character"
+    },
+    "n": {
+      "type": "integer"
+    },
+    "pct": {
+      "type": "numeric"
+    }
+  },
+  "names": ["variable", "answer", "n", "pct"],
+  "attrs": {}
+}

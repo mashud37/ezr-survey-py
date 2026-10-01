@@ -1,0 +1,21 @@
+{
+  "messages": [],
+  "warnings": [],
+  "kind": "frame",
+  "columns": {
+    "region": {
+      "type": "character"
+    },
+    "option": {
+      "type": "character"
+    },
+    "n": {
+      "type": "integer"
+    },
+    "pct": {
+      "type": "numeric"
+    }
+  },
+  "names": ["region", "option", "n", "pct"],
+  "attrs": {}
+}

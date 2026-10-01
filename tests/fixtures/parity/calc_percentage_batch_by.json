@@ -1,0 +1,24 @@
+{
+  "messages": [],
+  "warnings": [],
+  "kind": "frame",
+  "columns": {
+    "variable": {
+      "type": "character"
+    },
+    "demo_gender": {
+      "type": "character"
+    },
+    "answer": {
+      "type": "character"
+    },
+    "n": {
+      "type": "integer"
+    },
+    "pct": {
+      "type": "numeric"
+    }
+  },
+  "names": ["variable", "demo_gender", "answer", "n", "pct"],
+  "attrs": {}
+}

@@ -1,0 +1,19 @@
+{
+  "messages": [],
+  "warnings": [],
+  "kind": "frame",
+  "columns": {
+    "demo_gender": {
+      "type": "factor",
+      "levels": ["Male", "Female", "Non-binary"]
+    },
+    "n": {
+      "type": "integer"
+    },
+    "pct": {
+      "type": "numeric"
+    }
+  },
+  "names": ["demo_gender", "n", "pct"],
+  "attrs": {}
+}

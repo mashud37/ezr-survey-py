@@ -1,0 +1,12 @@
+{
+  "messages": [],
+  "warnings": ["Unknown currency code(s): XYZ. Add them via `rates`."],
+  "kind": "vector",
+  "columns": {
+    "value": {
+      "type": "numeric"
+    }
+  },
+  "names": ["value"],
+  "attrs": []
+}

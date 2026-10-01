@@ -1,0 +1,6 @@
+"name","n_levels","vars","prefixes"
+"education_isced","7","demo_edu, education","edu_"
+"frequency","5","<NA>","<NA>"
+"likelihood","5","satis_return","<NA>"
+"likert_agree","5","<NA>","<NA>"
+"likert_bad_good","5","<NA>","ratings_"

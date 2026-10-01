@@ -1,0 +1,21 @@
+{
+  "messages": [],
+  "warnings": [],
+  "kind": "frame",
+  "columns": {
+    "n": {
+      "type": "integer"
+    },
+    "mean": {
+      "type": "numeric"
+    },
+    "median": {
+      "type": "numeric"
+    },
+    "sd": {
+      "type": "numeric"
+    }
+  },
+  "names": ["n", "mean", "median", "sd"],
+  "attrs": {}
+}

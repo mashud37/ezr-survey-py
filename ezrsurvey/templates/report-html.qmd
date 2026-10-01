@@ -1,0 +1,97 @@
+---
+title: "{{TITLE}}"
+author: "{{AUTHOR}}"
+date: today
+format:
+  html:
+    toc: true
+    toc-location: left
+    theme: cosmo
+    embed-resources: true
+jupyter: python3
+execute:
+  echo: false
+  warning: false
+---
+
+```{python}
+#| tags: [parameters]
+data = ""
+```
+
+```{python}
+#| include: false
+import pandas as pd
+from plotnine import options
+
+import ezrsurvey as ez
+
+options.figure_size = (9, 5)
+options.dpi = 150
+
+# Render with your own data:  quarto render <file> -P data:my-survey.csv
+# For multi-file exports, replace this with ez.read_folder("data/")
+d = pd.read_csv(data) if data else ez.podracing_survey
+```
+
+## Executive summary
+
+Replace this paragraph with the story of the survey in four sentences: the
+headline number, what drives it, the one surprise, and what you recommend
+doing about it. Write it last -- it is the only section many readers open.
+
+## Who answered
+
+Describe the achieved sample here: who it represents, who is missing, and
+anything that skews it (a young panel, one dominant region, ...).
+
+```{python}
+ez.calc_percentage(d, "demo_gender", sort="desc").pipe(ez.plot_bars)
+```
+
+```{python}
+ez.calc_percentage(d, "demo_edu", sort="asc").pipe(ez.plot_bars, flip=True)
+```
+
+```{python}
+ez.calc_percentage_multi(d, "motivations_", id="respondent_id", sort="asc").pipe(
+    ez.plot_bars, label="option", flip=True
+)
+```
+
+## Satisfaction and NPS
+
+State the score, how it compares to whatever benchmark you have (last wave,
+sector norm), and where the promoters and detractors sit.
+
+```{python}
+ez.plot_nps_gauge(ez.calc_nps(d, "nps_value")["nps"].iloc[0])
+```
+
+```{python}
+ez.plot_nps(d, "nps_value")
+```
+
+## What drives satisfaction
+
+Read the matrix by quadrant: top-left (important, delivered poorly) is the
+to-do list; top-right (important, delivered well) is what to protect.
+
+```{python}
+ez.ipm_model(d, "nps_value", "ratings_").pipe(ez.plot_ipm)
+```
+
+## In their own words
+
+A handful of diverse verbatims puts flesh on the numbers. These are
+illustrations, not measurements -- say so in the caption.
+
+```{python}
+ez.sample_comments_diverse(d, "nps_com", "show_com", n=8, seed=42).pipe(ez.plot_quotes_tree)
+```
+
+## Methodology and precision
+
+```{python}
+ez.precision_summary(d, "demo_gender", ez.starts_with("ratings_"))
+```

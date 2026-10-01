@@ -1,0 +1,33 @@
+{
+  "messages": [],
+  "warnings": [],
+  "kind": "frame",
+  "columns": {
+    "n": {
+      "type": "integer"
+    },
+    "nps": {
+      "type": "numeric"
+    },
+    "pct_detractors": {
+      "type": "numeric"
+    },
+    "pct_passives": {
+      "type": "numeric"
+    },
+    "pct_promoters": {
+      "type": "numeric"
+    },
+    "detractors": {
+      "type": "integer"
+    },
+    "passives": {
+      "type": "integer"
+    },
+    "promoters": {
+      "type": "integer"
+    }
+  },
+  "names": ["n", "nps", "pct_detractors", "pct_passives", "pct_promoters", "detractors", "passives", "promoters"],
+  "attrs": {}
+}

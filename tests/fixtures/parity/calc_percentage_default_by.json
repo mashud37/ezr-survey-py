@@ -1,0 +1,21 @@
+{
+  "messages": [],
+  "warnings": [],
+  "kind": "frame",
+  "columns": {
+    "collector": {
+      "type": "character"
+    },
+    "demo_gender": {
+      "type": "character"
+    },
+    "n": {
+      "type": "integer"
+    },
+    "pct": {
+      "type": "numeric"
+    }
+  },
+  "names": ["collector", "demo_gender", "n", "pct"],
+  "attrs": {}
+}

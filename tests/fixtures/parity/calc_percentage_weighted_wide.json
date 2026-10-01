@@ -1,0 +1,27 @@
+{
+  "messages": [],
+  "warnings": [],
+  "kind": "frame",
+  "columns": {
+    "region": {
+      "type": "character"
+    },
+    "Likely": {
+      "type": "numeric"
+    },
+    "Not sure": {
+      "type": "numeric"
+    },
+    "Unlikely": {
+      "type": "numeric"
+    },
+    "Very likely": {
+      "type": "numeric"
+    },
+    "Very unlikely": {
+      "type": "numeric"
+    }
+  },
+  "names": ["region", "Likely", "Not sure", "Unlikely", "Very likely", "Very unlikely"],
+  "attrs": {}
+}

@@ -1,0 +1,21 @@
+{
+  "messages": [],
+  "warnings": [],
+  "kind": "frame",
+  "columns": {
+    "name": {
+      "type": "character"
+    },
+    "n_levels": {
+      "type": "integer"
+    },
+    "vars": {
+      "type": "character"
+    },
+    "prefixes": {
+      "type": "character"
+    }
+  },
+  "names": ["name", "n_levels", "vars", "prefixes"],
+  "attrs": {}
+}

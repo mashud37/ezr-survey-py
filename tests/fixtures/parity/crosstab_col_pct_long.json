@@ -1,0 +1,18 @@
+{
+  "messages": [],
+  "warnings": [],
+  "kind": "frame",
+  "columns": {
+    "region": {
+      "type": "character"
+    },
+    "demo_gender": {
+      "type": "character"
+    },
+    "value": {
+      "type": "numeric"
+    }
+  },
+  "names": ["region", "demo_gender", "value"],
+  "attrs": {}
+}

@@ -1,0 +1,36 @@
+{
+  "messages": [],
+  "warnings": [],
+  "kind": "frame",
+  "columns": {
+    "variable": {
+      "type": "character"
+    },
+    "type": {
+      "type": "character"
+    },
+    "unit": {
+      "type": "character"
+    },
+    "n": {
+      "type": "integer"
+    },
+    "estimate": {
+      "type": "numeric"
+    },
+    "se": {
+      "type": "numeric"
+    },
+    "rse": {
+      "type": "numeric"
+    },
+    "moe": {
+      "type": "numeric"
+    },
+    "precision": {
+      "type": "character"
+    }
+  },
+  "names": ["variable", "type", "unit", "n", "estimate", "se", "rse", "moe", "precision"],
+  "attrs": {}
+}

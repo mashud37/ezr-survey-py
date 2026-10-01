@@ -1,0 +1,19 @@
+{
+  "messages": [],
+  "warnings": [],
+  "kind": "frame",
+  "columns": {
+    "option": {
+      "type": "factor",
+      "levels": ["speed", "drivers", "social", "tradition", "betting"]
+    },
+    "n": {
+      "type": "integer"
+    },
+    "pct": {
+      "type": "numeric"
+    }
+  },
+  "names": ["option", "n", "pct"],
+  "attrs": {}
+}

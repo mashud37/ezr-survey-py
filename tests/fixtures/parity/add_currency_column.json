@@ -1,0 +1,18 @@
+{
+  "messages": [],
+  "warnings": [],
+  "kind": "frame",
+  "columns": {
+    "spend": {
+      "type": "numeric"
+    },
+    "currency": {
+      "type": "character"
+    },
+    "spend_usd": {
+      "type": "numeric"
+    }
+  },
+  "names": ["spend", "currency", "spend_usd"],
+  "attrs": {}
+}

@@ -1,0 +1,48 @@
+{
+  "messages": [],
+  "warnings": [],
+  "kind": "frame",
+  "columns": {
+    "respondent_id": {
+      "type": "character"
+    },
+    "ratings_atmosphere": {
+      "type": "character"
+    },
+    "ratings_commentary": {
+      "type": "character"
+    },
+    "ratings_safety": {
+      "type": "character"
+    },
+    "ratings_speed": {
+      "type": "character"
+    },
+    "ratings_value": {
+      "type": "character"
+    },
+    "ratings_venue": {
+      "type": "character"
+    },
+    "partner_recall_PodTech": {
+      "type": "character"
+    },
+    "partner_likeability_PodTech": {
+      "type": "character"
+    },
+    "partner_recall_BanthaBrew": {
+      "type": "character"
+    },
+    "partner_likeability_BanthaBrew": {
+      "type": "character"
+    },
+    "partner_recall_JawaJuice": {
+      "type": "character"
+    },
+    "partner_likeability_JawaJuice": {
+      "type": "character"
+    }
+  },
+  "names": ["respondent_id", "ratings_atmosphere", "ratings_commentary", "ratings_safety", "ratings_speed", "ratings_value", "ratings_venue", "partner_recall_PodTech", "partner_likeability_PodTech", "partner_recall_BanthaBrew", "partner_likeability_BanthaBrew", "partner_recall_JawaJuice", "partner_likeability_JawaJuice"],
+  "attrs": {}
+}

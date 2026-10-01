@@ -1,0 +1,6 @@
+{
+  "messages": [],
+  "warnings": [],
+  "kind": "error",
+  "error": "cell = \"mean\" needs a numeric column, but 'demo_gender' is not numeric."
+}

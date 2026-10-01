@@ -1,0 +1,24 @@
+{
+  "messages": [],
+  "warnings": [],
+  "kind": "frame",
+  "columns": {
+    "respondent": {
+      "type": "integer"
+    },
+    "motivations": {
+      "type": "character"
+    },
+    "motivations_Speed": {
+      "type": "character"
+    },
+    "motivations_Betting": {
+      "type": "character"
+    },
+    "motivations_Drivers": {
+      "type": "character"
+    }
+  },
+  "names": ["respondent", "motivations", "motivations_Speed", "motivations_Betting", "motivations_Drivers"],
+  "attrs": {}
+}

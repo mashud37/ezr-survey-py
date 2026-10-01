@@ -1,0 +1,5 @@
+"kind","name","value"
+"column","currency","character"
+"column","name","character"
+"column","per_usd","numeric"
+"attr","snapshot_date","2025-01-01"

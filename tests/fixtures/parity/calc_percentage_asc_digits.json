@@ -1,0 +1,19 @@
+{
+  "messages": [],
+  "warnings": [],
+  "kind": "frame",
+  "columns": {
+    "demo_job": {
+      "type": "factor",
+      "levels": ["Unemployed", "Not in labour force", "Employed part-time", "Student", "Employed full-time"]
+    },
+    "n": {
+      "type": "integer"
+    },
+    "pct": {
+      "type": "numeric"
+    }
+  },
+  "names": ["demo_job", "n", "pct"],
+  "attrs": {}
+}

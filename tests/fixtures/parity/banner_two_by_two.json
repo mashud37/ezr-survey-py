@@ -1,0 +1,48 @@
+{
+  "messages": [],
+  "warnings": [],
+  "kind": "frame",
+  "columns": {
+    "variable": {
+      "type": "character"
+    },
+    "item": {
+      "type": "character"
+    },
+    "Overall": {
+      "type": "numeric"
+    },
+    "Female": {
+      "type": "numeric"
+    },
+    "Male": {
+      "type": "numeric"
+    },
+    "Non-binary": {
+      "type": "numeric"
+    },
+    "Asia": {
+      "type": "numeric"
+    },
+    "Europe": {
+      "type": "numeric"
+    },
+    "Latin America": {
+      "type": "numeric"
+    },
+    "North America": {
+      "type": "numeric"
+    },
+    "Oceania": {
+      "type": "numeric"
+    }
+  },
+  "names": ["variable", "item", "Overall", "Female", "Male", "Non-binary", "Asia", "Europe", "Latin America", "North America", "Oceania"],
+  "attrs": {
+    "banner_spanners": {
+      "col": ["Overall", "Female", "Male", "Non-binary", "Asia", "Europe", "Latin America", "North America", "Oceania"],
+      "group": ["Overall", "demo_gender", "demo_gender", "demo_gender", "region", "region", "region", "region", "region"],
+      "label": ["Overall", "Female", "Male", "Non-binary", "Asia", "Europe", "Latin America", "North America", "Oceania"]
+    }
+  }
+}

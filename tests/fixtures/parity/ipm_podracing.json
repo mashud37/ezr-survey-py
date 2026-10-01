@@ -1,0 +1,22 @@
+{
+  "messages": [],
+  "warnings": [],
+  "kind": "frame",
+  "columns": {
+    "feature": {
+      "type": "character"
+    },
+    "importance": {
+      "type": "numeric"
+    },
+    "performance": {
+      "type": "numeric"
+    },
+    "perf_class": {
+      "type": "factor",
+      "levels": ["1", "2", "3", "4", "5"]
+    }
+  },
+  "names": ["feature", "importance", "performance", "perf_class"],
+  "attrs": {}
+}

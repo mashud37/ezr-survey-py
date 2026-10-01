@@ -1,0 +1,21 @@
+{
+  "messages": [],
+  "warnings": [],
+  "kind": "frame",
+  "columns": {
+    "region": {
+      "type": "character"
+    },
+    "Female": {
+      "type": "numeric"
+    },
+    "Male": {
+      "type": "numeric"
+    },
+    "Non-binary": {
+      "type": "numeric"
+    }
+  },
+  "names": ["region", "Female", "Male", "Non-binary"],
+  "attrs": {}
+}

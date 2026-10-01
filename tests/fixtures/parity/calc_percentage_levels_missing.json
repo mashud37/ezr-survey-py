@@ -1,0 +1,19 @@
+{
+  "messages": ["Order for 'satis_return' does not list 3 answer(s), which become NA: Not sure, Unlikely, Very unlikely. Add them to register_order() or pass `levels =`."],
+  "warnings": [],
+  "kind": "frame",
+  "columns": {
+    "satis_return": {
+      "type": "ordered",
+      "levels": ["Likely", "Very likely"]
+    },
+    "n": {
+      "type": "integer"
+    },
+    "pct": {
+      "type": "numeric"
+    }
+  },
+  "names": ["satis_return", "n", "pct"],
+  "attrs": {}
+}

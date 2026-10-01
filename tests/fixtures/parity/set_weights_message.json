@@ -1,0 +1,12 @@
+{
+  "messages": ["Weighting on 1 variable(s): demo_gender. Design effect 1.03, effective n = 968 of 1000."],
+  "warnings": [],
+  "kind": "vector",
+  "columns": {
+    "demo_gender": {
+      "type": "numeric"
+    }
+  },
+  "names": ["demo_gender"],
+  "attrs": {}
+}

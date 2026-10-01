@@ -1,0 +1,6 @@
+"kind","name","value"
+"column","country","character"
+"column","iso2","character"
+"column","iso3","character"
+"column","region","character"
+"column","subregion","character"

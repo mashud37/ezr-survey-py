@@ -1,0 +1,12 @@
+{
+  "messages": [],
+  "warnings": ["5 country value(s) did not match a region: Atlantis, Narnia, Mordor, Oz, Gondor"],
+  "kind": "vector",
+  "columns": {
+    "value": {
+      "type": "character"
+    }
+  },
+  "names": ["value"],
+  "attrs": []
+}

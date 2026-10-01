@@ -1,0 +1,12 @@
+{
+  "messages": ["recode_age: 1 value(s) held no number and became NA."],
+  "warnings": [],
+  "kind": "vector",
+  "columns": {
+    "value": {
+      "type": "character"
+    }
+  },
+  "names": ["value"],
+  "attrs": []
+}

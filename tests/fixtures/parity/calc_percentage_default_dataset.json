@@ -1,0 +1,19 @@
+{
+  "messages": [],
+  "warnings": [],
+  "kind": "frame",
+  "columns": {
+    "demo_edu": {
+      "type": "factor",
+      "levels": ["Upper secondary", "Bachelor or equivalent", "Master or equivalent", "Short-cycle tertiary", "Lower secondary", "Doctoral or equivalent", "Primary or less"]
+    },
+    "n": {
+      "type": "integer"
+    },
+    "pct": {
+      "type": "numeric"
+    }
+  },
+  "names": ["demo_edu", "n", "pct"],
+  "attrs": {}
+}

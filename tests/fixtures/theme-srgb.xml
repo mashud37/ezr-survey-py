@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<a:theme xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" name="Corp">
+  <a:themeElements>
+    <a:clrScheme name="Corp">
+      <a:dk1><a:srgbClr val="1A1A2E"/></a:dk1>
+      <a:lt1><a:srgbClr val="FDFDFD"/></a:lt1>
+      <a:dk2><a:srgbClr val="16213E"/></a:dk2>
+      <a:lt2><a:srgbClr val="EEEEEE"/></a:lt2>
+      <a:accent1><a:srgbClr val="0B5394"/></a:accent1>
+      <a:accent2><a:srgbClr val="E69138"/></a:accent2>
+      <a:accent3><a:srgbClr val="6AA84F"/></a:accent3>
+      <a:accent4><a:srgbClr val="A64D79"/></a:accent4>
+      <a:accent5><a:srgbClr val="45818E"/></a:accent5>
+      <a:accent6><a:srgbClr val="F1C232"/></a:accent6>
+      <a:hlink><a:srgbClr val="1155CC"/></a:hlink>
+      <a:folHlink><a:srgbClr val="9900FF"/></a:folHlink>
+    </a:clrScheme>
+    <a:fontScheme name="Corp">
+      <a:majorFont><a:latin typeface="Georgia"/></a:majorFont>
+      <a:minorFont><a:latin typeface="Verdana"/></a:minorFont>
+    </a:fontScheme>
+  </a:themeElements>
+</a:theme>

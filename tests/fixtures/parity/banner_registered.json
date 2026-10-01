@@ -1,0 +1,60 @@
+{
+  "messages": [],
+  "warnings": [],
+  "kind": "frame",
+  "columns": {
+    "variable": {
+      "type": "character"
+    },
+    "item": {
+      "type": "character"
+    },
+    "Overall": {
+      "type": "numeric"
+    },
+    "Primary or less": {
+      "type": "numeric"
+    },
+    "Lower secondary": {
+      "type": "numeric"
+    },
+    "Upper secondary": {
+      "type": "numeric"
+    },
+    "Short-cycle tertiary": {
+      "type": "numeric"
+    },
+    "Bachelor or equivalent": {
+      "type": "numeric"
+    },
+    "Master or equivalent": {
+      "type": "numeric"
+    },
+    "Doctoral or equivalent": {
+      "type": "numeric"
+    },
+    "Very unlikely": {
+      "type": "numeric"
+    },
+    "Unlikely": {
+      "type": "numeric"
+    },
+    "Not sure": {
+      "type": "numeric"
+    },
+    "Likely": {
+      "type": "numeric"
+    },
+    "Very likely": {
+      "type": "numeric"
+    }
+  },
+  "names": ["variable", "item", "Overall", "Primary or less", "Lower secondary", "Upper secondary", "Short-cycle tertiary", "Bachelor or equivalent", "Master or equivalent", "Doctoral or equivalent", "Very unlikely", "Unlikely", "Not sure", "Likely", "Very likely"],
+  "attrs": {
+    "banner_spanners": {
+      "col": ["Overall", "Primary or less", "Lower secondary", "Upper secondary", "Short-cycle tertiary", "Bachelor or equivalent", "Master or equivalent", "Doctoral or equivalent", "Very unlikely", "Unlikely", "Not sure", "Likely", "Very likely"],
+      "group": ["Overall", "demo_edu", "demo_edu", "demo_edu", "demo_edu", "demo_edu", "demo_edu", "demo_edu", "satis_return", "satis_return", "satis_return", "satis_return", "satis_return"],
+      "label": ["Overall", "Primary or less", "Lower secondary", "Upper secondary", "Short-cycle tertiary", "Bachelor or equivalent", "Master or equivalent", "Doctoral or equivalent", "Very unlikely", "Unlikely", "Not sure", "Likely", "Very likely"]
+    }
+  }
+}

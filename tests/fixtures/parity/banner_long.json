@@ -1,0 +1,26 @@
+{
+  "messages": [],
+  "warnings": [],
+  "kind": "frame",
+  "columns": {
+    "variable": {
+      "type": "character"
+    },
+    "item": {
+      "type": "character"
+    },
+    "group": {
+      "type": "character"
+    },
+    "group_item": {
+      "type": "character"
+    },
+    "value": {
+      "type": "numeric"
+    }
+  },
+  "names": ["variable", "item", "group", "group_item", "value"],
+  "attrs": {
+    "item_levels": ["Likely", "Not sure", "Unlikely", "Very likely", "Very unlikely"]
+  }
+}

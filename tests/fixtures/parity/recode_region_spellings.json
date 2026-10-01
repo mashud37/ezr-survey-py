@@ -1,0 +1,12 @@
+{
+  "messages": [],
+  "warnings": ["1 country value(s) did not match a region: no"],
+  "kind": "vector",
+  "columns": {
+    "value": {
+      "type": "character"
+    }
+  },
+  "names": ["value"],
+  "attrs": []
+}

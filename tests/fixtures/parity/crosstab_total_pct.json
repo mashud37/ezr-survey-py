@@ -1,0 +1,21 @@
+{
+  "messages": [],
+  "warnings": [],
+  "kind": "frame",
+  "columns": {
+    "collector": {
+      "type": "character"
+    },
+    "Female": {
+      "type": "numeric"
+    },
+    "Male": {
+      "type": "numeric"
+    },
+    "Non-binary": {
+      "type": "numeric"
+    }
+  },
+  "names": ["collector", "Female", "Male", "Non-binary"],
+  "attrs": {}
+}

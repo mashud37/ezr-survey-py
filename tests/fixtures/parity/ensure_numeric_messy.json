@@ -1,0 +1,12 @@
+{
+  "messages": ["Auto-converted 'age' to numeric. 1 value(s) could not be parsed and became NA."],
+  "warnings": [],
+  "kind": "vector",
+  "columns": {
+    "value": {
+      "type": "numeric"
+    }
+  },
+  "names": ["value"],
+  "attrs": []
+}

@@ -1,0 +1,21 @@
+{
+  "messages": [],
+  "warnings": [],
+  "kind": "frame",
+  "columns": {
+    "satis_return": {
+      "type": "character"
+    },
+    "n": {
+      "type": "integer"
+    },
+    "pct": {
+      "type": "numeric"
+    },
+    "wpct": {
+      "type": "numeric"
+    }
+  },
+  "names": ["satis_return", "n", "pct", "wpct"],
+  "attrs": {}
+}

@@ -1,0 +1,21 @@
+{
+  "messages": [],
+  "warnings": [],
+  "kind": "frame",
+  "columns": {
+    "feature": {
+      "type": "character"
+    },
+    "previous": {
+      "type": "numeric"
+    },
+    "current": {
+      "type": "numeric"
+    },
+    "difference": {
+      "type": "numeric"
+    }
+  },
+  "names": ["feature", "previous", "current", "difference"],
+  "attrs": {}
+}

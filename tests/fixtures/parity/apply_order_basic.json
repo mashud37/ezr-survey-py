@@ -1,0 +1,15 @@
+{
+  "messages": [],
+  "warnings": [],
+  "kind": "vector",
+  "columns": {
+    "value": {
+      "type": "ordered",
+      "levels": ["S", "M", "L"]
+    }
+  },
+  "names": ["value"],
+  "attrs": {
+    "levels": ["S", "M", "L"]
+  }
+}

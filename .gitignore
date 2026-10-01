@@ -41,3 +41,6 @@ ezrsurvey-example/
 # Documentation site build
 _site/
 .quarto/
+
+# Side-by-side chart sheet, regenerated on demand
+parity/charts/
